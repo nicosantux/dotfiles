@@ -20,14 +20,14 @@ vim.keymap.set("n", "N", "Nzzzv")
 
 -- Editor split view
 vim.keymap.set("n", "<leader>v", "<C-w>v") -- split window vertically
-vim.keymap.set("n", "<leader>h", "<C-w>s") -- split window horizontally 
+vim.keymap.set("n", "<leader>h", "<C-w>s") -- split window horizontally
 vim.keymap.set("n", "<leader>e", "<C-w>=") -- make split windows equal width
-vim.keymap.set("n", "<leader>ww", ":close<CR>") -- close current split window 
+vim.keymap.set("n", "<leader>ww", ":close<CR>") -- close current split window
 
 vim.keymap.set("n", "<leader>w", ":bdelete<CR>") -- close current bufferline
 vim.keymap.set("n", "<leader>wq", ":bdelete!<CR>") -- close current bufferline forced
 vim.keymap.set("n", "<leader>p", ":BufferLineCyclePrev<CR>") -- prev bufferline
-vim.keymap.set("n", "<leader>n", ":BufferLineCycleNext<CR>") -- next bufferline 
+vim.keymap.set("n", "<leader>n", ":BufferLineCycleNext<CR>") -- next bufferline
 
 -- Editor tabs
 vim.keymap.set("n", "<leader>to", ":tabnew<CR>") -- open new tab 
