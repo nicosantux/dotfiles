@@ -22,22 +22,25 @@ vim.keymap.set("n", "N", "Nzzzv")
 vim.keymap.set("n", "<leader>v", "<C-w>v") -- split window vertically
 vim.keymap.set("n", "<leader>h", "<C-w>s") -- split window horizontally
 vim.keymap.set("n", "<leader>e", "<C-w>=") -- make split windows equal width
-vim.keymap.set("n", "<leader>ww", ":close<CR>") -- close current split window
+vim.keymap.set("n", "<leader>ww", "<cmd>close<CR>") -- close current split window
 
-vim.keymap.set("n", "<leader>w", ":bdelete<CR>") -- close current bufferline
-vim.keymap.set("n", "<leader>wq", ":bdelete!<CR>") -- close current bufferline forced
-vim.keymap.set("n", "<leader>p", ":BufferLineCyclePrev<CR>") -- prev bufferline
-vim.keymap.set("n", "<leader>n", ":BufferLineCycleNext<CR>") -- next bufferline
+vim.keymap.set("n", "<leader>q", "<cmd>bdelete<CR>") -- close current buffer
+vim.keymap.set("n", "<leader>qf", "<cmd>bdelete!<CR>") -- force close current buffer
+vim.keymap.set("n", "<leader>p", "<cmd>BufferLineCyclePrev<CR>") -- go to previous buffer
+vim.keymap.set("n", "<leader>n", "<cmd>BufferLineCycleNext<CR>") -- go to next buffer
+vim.keymap.set("n", "<leader>w", "<cmd>w<CR>") -- save file
+vim.keymap.set("n", "<leader>wa", "<cmd>wa<CR>") -- save file
+vim.keymap.set("n", "<leader>wq", "<cmd>w<CR> | :bdelete<CR>") -- save and close file
 
 -- Editor tabs
-vim.keymap.set("n", "<leader>to", ":tabnew<CR>") -- open new tab 
-vim.keymap.set("n", "<leader>tw", ":tabclose<CR>") -- close current tab 
-vim.keymap.set("n", "<leader>tn", ":tabn<CR>") -- go to next tab 
-vim.keymap.set("n", "<leader>tp", ":tabp<CR>") -- go to previous tab 
+vim.keymap.set("n", "<leader>to", "<cmd>tabnew<CR>") -- open new tab
+vim.keymap.set("n", "<leader>tw", "<cmd>tabclose<CR>") -- close current tab
+vim.keymap.set("n", "<leader>tn", "<cmd>tabn<CR>") -- go to next tab
+vim.keymap.set("n", "<leader>tp", "<cmd>tabp<CR>") -- go to previous tab
 
 -- NTree
-vim.keymap.set("n", "<leader>d", ":NvimTreeToggle<cr>")
-vim.keymap.set("n", "<leader>f", ":NvimTreeFocus<cr>")
+vim.keymap.set("n", "<leader>d", "<cmd>NvimTreeToggle<cr>")
+vim.keymap.set("n", "<leader>f", "<cmd>NvimTreeFocus<cr>")
 
 -- Telescope
 vim.keymap.set("n", "<C-p>", "<cmd>Telescope find_files<cr>")

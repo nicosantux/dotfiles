@@ -45,5 +45,3 @@ vim.opt.incsearch = true
 vim.opt.scrolloff = 8
 vim.opt.isfname:append("@-@")
 vim.opt.updatetime = 50
-
-
