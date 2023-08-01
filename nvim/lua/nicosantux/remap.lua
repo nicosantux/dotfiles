@@ -28,9 +28,6 @@ vim.keymap.set("n", "<leader>q", "<cmd>bdelete<CR>") -- close current buffer
 vim.keymap.set("n", "<leader>qf", "<cmd>bdelete!<CR>") -- force close current buffer
 vim.keymap.set("n", "<leader>p", "<cmd>BufferLineCyclePrev<CR>") -- go to previous buffer
 vim.keymap.set("n", "<leader>n", "<cmd>BufferLineCycleNext<CR>") -- go to next buffer
-vim.keymap.set("n", "<leader>w", "<cmd>w<CR>") -- save file
-vim.keymap.set("n", "<leader>wa", "<cmd>wa<CR>") -- save file
-vim.keymap.set("n", "<leader>wq", "<cmd>w<CR> | :bdelete<CR>") -- save and close file
 
 -- Editor tabs
 vim.keymap.set("n", "<leader>to", "<cmd>tabnew<CR>") -- open new tab

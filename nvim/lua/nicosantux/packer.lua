@@ -11,6 +11,12 @@ return require("packer").startup(function(use)
 
   use {"akinsho/bufferline.nvim", tag = "v3.*", requires = "nvim-tree/nvim-web-devicons"}
 
+  use "stevearc/dressing.nvim"
+
+  use "MunifTanjim/nui.nvim"
+
+  use "folke/noice.nvim"
+
   -- NeoVim theme
   use "rebelot/kanagawa.nvim"
 
