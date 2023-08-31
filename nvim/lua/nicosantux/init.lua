@@ -1,3 +1,3 @@
-require("nicosantux.packer")
-require("nicosantux.remap")
 require("nicosantux.set")
+require("nicosantux.remap")
+require("nicosantux.lazy")
