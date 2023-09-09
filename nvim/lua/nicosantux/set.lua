@@ -46,4 +46,4 @@ opt.scrolloff = 8
 opt.isfname:append("@-@")
 opt.updatetime = 50
 
-vim.cmd [[autocmd FileType gitcommit let &colorcolumn = '73']]
+vim.cmd([[autocmd FileType gitcommit let &colorcolumn = '73']])
