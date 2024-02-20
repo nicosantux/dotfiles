@@ -1,14 +1,7 @@
 return {
-  "numToStr/Comment.nvim",
-  event = { "BufReadPre", "BufNewFile" },
-  config = function()
-    require("Comment").setup({
-      toggler = {
-        line = "]]"
-      },
-      opleader = {
-        line = "]"
-      }
-    })
-  end
+	"numToStr/Comment.nvim",
+	opts = {
+		-- add any options here
+	},
+	lazy = false,
 }

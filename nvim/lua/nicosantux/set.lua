@@ -14,6 +14,7 @@ opt.autoindent = true
 
 -- line wrapping
 opt.wrap = true
+opt.textwidth = 100
 
 -- search settings
 opt.ignorecase = true

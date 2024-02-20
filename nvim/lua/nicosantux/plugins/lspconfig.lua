@@ -53,6 +53,7 @@ return {
 			end, opts)
 			-- typescript specific keymaps (e.g. rename file and update imports)
 			if client.name == "tsserver" then
+				keymap.set("n", "<leader>ai", ":TypescriptAddMissingImports<CR>") -- rename file and update imports
 				keymap.set("n", "<leader>rf", ":TypescriptRenameFile<CR>") -- rename file and update imports
 				keymap.set("n", "<leader>oi", ":TypescriptOrganizeImports<CR>") -- organize imports
 				keymap.set("n", "<leader>ru", ":TypescriptRemoveUnused<CR>") -- remove unused variables
@@ -91,13 +92,32 @@ return {
 		lspconfig["tailwindcss"].setup({
 			capabilities = capabilities,
 			on_attach = on_attach,
+			settings = {
+				tailwindCSS = {
+					experimental = {
+						classRegex = {
+							{ "cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
+							{ "cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)" },
+						},
+					},
+				},
+			},
 		})
 
 		-- configure emmet language server
 		lspconfig["emmet_ls"].setup({
 			capabilities = capabilities,
 			on_attach = on_attach,
-			filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
+			filetypes = {
+				"css",
+				"html",
+				"javascript",
+				"javascriptreact",
+				"sass",
+				"scss",
+				"typescript",
+				"typescriptreact",
+			},
 		})
 
 		lspconfig["eslint"].setup({

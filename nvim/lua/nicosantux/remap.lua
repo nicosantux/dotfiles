@@ -16,23 +16,21 @@ keymap.set("n", "J", "mzJ`z")
 keymap.set("n", "<C-d>", "<C-d>zz")
 keymap.set("n", "<C-u>", "<C-u>zz")
 
+-- Select all
+keymap.set("n", "<C-a>", "ggVG")
+
 -- Center the editor when move into selections
 keymap.set("n", "n", "nzzzv")
 keymap.set("n", "N", "Nzzzv")
 
+-- New tab
+keymap.set("n", "<C-t>", "<cmd>tabnew<CR>")
+keymap.set("n", "<C-w>", "<cmd>bdelete<CR>")
+keymap.set("n", "<tab>", "<cmd>BufferLineCycleNext<CR>")
+keymap.set("n", "<s-tab>", "<cmd>BufferLineCyclePrev<CR>")
+
 -- Editor split view
-keymap.set("n", "<leader>v", "<C-w>v")                       -- split window vertically
-keymap.set("n", "<leader>h", "<C-w>s")                       -- split window horizontally
-keymap.set("n", "<leader>e", "<C-w>=")                       -- make split windows equal width
-keymap.set("n", "<leader>ww", "<cmd>close<CR>")              -- close current split window
-
-keymap.set("n", "<leader>q", "<cmd>bdelete<CR>")             -- close current buffer
-keymap.set("n", "<leader>qf", "<cmd>bdelete!<CR>")           -- force close current buffer
-keymap.set("n", "<leader>p", "<cmd>BufferLineCyclePrev<CR>") -- go to previous buffer
-keymap.set("n", "<leader>n", "<cmd>BufferLineCycleNext<CR>") -- go to next buffer
-
--- Editor tabs
-keymap.set("n", "<leader>to", "<cmd>tabnew<CR>")   -- open new tab
-keymap.set("n", "<leader>tw", "<cmd>tabclose<CR>") -- close current tab
-keymap.set("n", "<leader>tn", "<cmd>tabn<CR>")     -- go to next tab
-keymap.set("n", "<leader>tp", "<cmd>tabp<CR>")     -- go to previous tab
+keymap.set("n", "<leader>v", "<C-w>v")
+keymap.set("n", "<leader>h", "<C-w>s")
+keymap.set("n", "<leader>e", "<C-w>=")
+keymap.set("n", "<leader>ww", "<cmd>close<CR>")
