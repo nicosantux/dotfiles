@@ -1,5 +1,5 @@
 return {
-  "christoomey/vim-tmux-navigator",
-  "stevearc/dressing.nvim",
-  "windwp/nvim-ts-autotag",
+	"christoomey/vim-tmux-navigator",
+	"nvim-lua/plenary.nvim",
+	"windwp/nvim-ts-autotag",
 }

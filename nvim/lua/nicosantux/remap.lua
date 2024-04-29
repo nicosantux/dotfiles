@@ -3,14 +3,14 @@ vim.g.mapleader = " "
 local keymap = vim.keymap
 
 -- Quit insert mode
-keymap.set("i", "jk", "<Esc>")
+keymap.set("i", "jk", "<Esc>", { desc = "Exit insert mode" })
 
 -- Move up or down the selection
-keymap.set("v", "J", ":m '>+1<CR>gv=gv")
-keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move down the selection" })
+keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move up the selection" })
 
 -- Move up a line and don't move the cursor
-keymap.set("n", "J", "mzJ`z")
+keymap.set("n", "J", "mzJ`z", { desc = "Move up a line and don't move the cursor" })
 
 -- Navigating within the file with centered view
 keymap.set("n", "<C-d>", "<C-d>zz")
@@ -24,13 +24,13 @@ keymap.set("n", "n", "nzzzv")
 keymap.set("n", "N", "Nzzzv")
 
 -- New tab
-keymap.set("n", "<C-t>", "<cmd>tabnew<CR>")
-keymap.set("n", "<C-w>", "<cmd>bdelete<CR>")
-keymap.set("n", "<tab>", "<cmd>BufferLineCycleNext<CR>")
-keymap.set("n", "<s-tab>", "<cmd>BufferLineCyclePrev<CR>")
+keymap.set("n", "<C-t>", "<cmd>tabnew<CR>", { desc = "Open a new tab" })
+keymap.set("n", "<C-w>", "<cmd>bdelete<CR>", { desc = "Close tab" })
+keymap.set("n", "<tab>", "<cmd>BufferLineCycleNext<CR>", { desc = "Go to next tab" })
+keymap.set("n", "<s-tab>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Go to previous tab" })
 
 -- Editor split view
-keymap.set("n", "<leader>v", "<C-w>v")
-keymap.set("n", "<leader>h", "<C-w>s")
-keymap.set("n", "<leader>e", "<C-w>=")
-keymap.set("n", "<leader>ww", "<cmd>close<CR>")
+keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" })
+keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" })
+keymap.set("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" })
+keymap.set("n", "<leader>sw", "<cmd>close<CR>", { desc = "Close current split" })

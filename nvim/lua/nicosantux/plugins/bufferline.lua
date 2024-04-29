@@ -5,7 +5,7 @@ return {
 	config = true,
 	opts = {
 		options = {
-			separator_style = "slant",
+			-- separator_style = "slant",
 		},
 	},
 }

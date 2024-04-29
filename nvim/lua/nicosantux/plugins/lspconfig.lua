@@ -2,12 +2,10 @@ return {
 	"neovim/nvim-lspconfig",
 	event = { "BufReadPre", "BufNewFile" },
 	dependencies = {
+		"hrsh7th/cmp-nvim-lsp",
 		"jose-elias-alvarez/typescript.nvim",
 		"hrsh7th/cmp-nvim-lsp",
-		{
-			"smjonas/inc-rename.nvim",
-			config = true,
-		},
+		{ "smjonas/inc-rename.nvim", config = true },
 	},
 	config = function()
 		local lspconfig = require("lspconfig")
@@ -21,42 +19,44 @@ return {
 		local on_attach = function(client, bufnr)
 			local opts = { buffer = bufnr, remap = false }
 
-			keymap.set("n", "gd", function()
-				vim.lsp.buf.definition()
-			end, opts)
-			keymap.set("n", "K", function()
-				vim.lsp.buf.hover()
-			end, opts)
-			keymap.set("n", "<leader>vws", function()
-				vim.lsp.buf.workspace_symbol()
-			end, opts)
-			keymap.set("n", "<leader>k", function()
-				vim.diagnostic.open_float()
-			end, opts)
-			keymap.set("n", "[d", function()
-				vim.diagnostic.goto_next()
-			end, opts)
-			keymap.set("n", "]d", function()
-				vim.diagnostic.goto_prev()
-			end, opts)
-			keymap.set("n", "<leader>ca", function()
-				vim.lsp.buf.code_action()
-			end, opts)
-			keymap.set("n", "<leader>rr", function()
-				vim.lsp.buf.references()
-			end, opts)
-			keymap.set("n", "<leader>rn", function()
-				vim.lsp.buf.rename()
-			end, opts)
-			keymap.set("i", "<C-h>", function()
-				vim.lsp.buf.signature_help()
-			end, opts)
+			opts.desc = "Go to definition"
+			keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<cr>", opts)
+
+			opts.desc = "Go to references"
+			keymap.set("n", "gr", "<cmd>Telescope lsp_references<cr>", opts)
+
+			opts.desc = "Show documentation for what is under cursor"
+			keymap.set("n", "K", vim.lsp.buf.hover, opts)
+
+			opts.desc = "Show line diagnostics"
+			keymap.set("n", "<leader>k", vim.diagnostic.open_float, opts)
+
+			opts.desc = "Go to previous diagnostic"
+			keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
+
+			opts.desc = "Go to next diagnostic"
+			keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
+
+			opts.desc = "Show available code actions"
+			keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
+
+			opts.desc = "Rename symbol"
+			keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
+
+			opts.desc = "Show signature help"
+			keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
+
 			-- typescript specific keymaps (e.g. rename file and update imports)
 			if client.name == "tsserver" then
-				keymap.set("n", "<leader>ai", ":TypescriptAddMissingImports<CR>") -- rename file and update imports
-				keymap.set("n", "<leader>rf", ":TypescriptRenameFile<CR>") -- rename file and update imports
-				keymap.set("n", "<leader>oi", ":TypescriptOrganizeImports<CR>") -- organize imports
-				keymap.set("n", "<leader>ru", ":TypescriptRemoveUnused<CR>") -- remove unused variables
+				keymap.set("n", "<leader>ai", "<cmd>TypescriptAddMissingImports<cr>", { desc = "Add missing imports" })
+				keymap.set(
+					"n",
+					"<leader>rf",
+					"<cmd>TypescriptRenameFile<cr>",
+					{ desc = "Rename file and update imports" }
+				)
+				keymap.set("n", "<leader>oi", "<cmd>TypescriptOrganizeImports<cr>", { desc = "Organize imports" })
+				keymap.set("n", "<leader>ru", "<cmd>TypescriptRemoveUnused<cr>", { desc = "Remove unused variables" })
 			end
 		end
 		-- used to enable autocompletion (assign to every lsp server config)
