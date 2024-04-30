@@ -31,7 +31,7 @@ return {
 
 		keymap.set("n", "<C-p>", "<cmd>Telescope find_files<cr>", { desc = "Find files in cwd" })
 		keymap.set("n", "<leader>ps", "<cmd>Telescope live_grep<cr>", { desc = "Find string in cwd" })
-		keymap.set("n", "<leader>pc", "<cmd>Telescope grep_string<cr>", { desc = "Find string under cursort in cwd" })
+		keymap.set("n", "<leader>pc", "<cmd>Telescope grep_string<cr>", { desc = "Find string under cursor in cwd" })
 		keymap.set("n", "<leader>gc", "<cmd>Telescope git_commits<cr>", { desc = "Find commits" })
 		keymap.set("n", "<leader>gb", "<cmd>Telescope git_branches<cr>", { desc = "Find branches" })
 		keymap.set("n", "<leader>gs", "<cmd>Telescope git_status<cr>", { desc = "Find changed files" })
