@@ -1,14 +1,28 @@
-# Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
+# starship
+eval "$(starship init zsh)"
+export STARSHIP_CONFIG=~/.config/starship/starship.toml
 
-export PATH="/opt/homebrew/bin:$PATH"
-ZSH_THEME="robbyrussell"
-zstyle ':omz:update' mode auto
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
+# history setup
+HISTFILE=$HOME/.zhistory
+SAVEHIST=1000
+HISTSIZE=999
+setopt share_history
+setopt hist_expire_dups_first
+setopt hist_ignore_dups
+setopt hist_verify
 
+# completion using arrow keys (based on history)
+bindkey "^[[A" history-search-backward
+bindkey "^[[B" history-search-forward
+
+# zsh-autosuggestions
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# zsh-syntax-highlighting
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# fnm
 eval "$(fnm env --use-on-cd)"
-
-source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
@@ -17,6 +31,7 @@ alias pn="pnpm"
 alias px="pnpx"
 alias gfo="git fetch origin --prune"
 alias gst="git status -u"
+alias ga="git add"
 alias gaa="git add ."
 alias gct="git commit"
 alias gph="git push"
