@@ -13,6 +13,7 @@ return {
 
 		telescope.setup({
 			defaults = {
+				file_ignore_patterns = { ".git/" },
 				path_display = { "smart" },
 				mappings = {
 					i = {
@@ -29,11 +30,12 @@ return {
 		-- set keymaps
 		local keymap = vim.keymap
 
-		keymap.set("n", "<C-p>", "<cmd>Telescope find_files<cr>", { desc = "Find files in cwd" })
-		keymap.set("n", "<leader>ps", "<cmd>Telescope live_grep<cr>", { desc = "Find string in cwd" })
-		keymap.set("n", "<leader>pc", "<cmd>Telescope grep_string<cr>", { desc = "Find string under cursor in cwd" })
-		keymap.set("n", "<leader>gc", "<cmd>Telescope git_commits<cr>", { desc = "Find commits" })
-		keymap.set("n", "<leader>gb", "<cmd>Telescope git_branches<cr>", { desc = "Find branches" })
-		keymap.set("n", "<leader>gs", "<cmd>Telescope git_status<cr>", { desc = "Find changed files" })
+		keymap.set("n", "<leader>ff", "<cmd>Telescope find_files hidden=true<cr>", { desc = "Find files in cwd" })
+		keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { desc = "Find files in buffers" })
+		keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep<cr>", { desc = "Find string in cwd" })
+		keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>", { desc = "Find string under cursor in cwd" })
+		keymap.set("n", "<leader>fgc", "<cmd>Telescope git_commits<cr>", { desc = "Find commits" })
+		keymap.set("n", "<leader>fgb", "<cmd>Telescope git_branches<cr>", { desc = "Find branches" })
+		keymap.set("n", "<leader>fgs", "<cmd>Telescope git_status<cr>", { desc = "Find changed files" })
 	end,
 }

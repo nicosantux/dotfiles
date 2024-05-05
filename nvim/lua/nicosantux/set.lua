@@ -47,4 +47,8 @@ opt.scrolloff = 8
 opt.isfname:append("@-@")
 opt.updatetime = 50
 
+-- spellcheck
+opt.spelllang = "en_us,es"
+opt.spell = true
+
 vim.cmd([[autocmd FileType gitcommit let &colorcolumn = '73']])

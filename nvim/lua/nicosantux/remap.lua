@@ -23,7 +23,7 @@ keymap.set("n", "<C-a>", "ggVG")
 keymap.set("n", "n", "nzzzv")
 keymap.set("n", "N", "Nzzzv")
 
--- New tab
+-- Tabs
 keymap.set("n", "<C-t>", "<cmd>tabnew<CR>", { desc = "Open a new tab" })
 keymap.set("n", "<C-w>", "<cmd>bdelete<CR>", { desc = "Close tab" })
 keymap.set("n", "<tab>", "<cmd>BufferLineCycleNext<CR>", { desc = "Go to next tab" })

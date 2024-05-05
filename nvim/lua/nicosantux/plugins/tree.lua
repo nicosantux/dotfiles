@@ -21,8 +21,8 @@ return {
 		-- keymaps
 		local keymap = vim.keymap
 
-		keymap.set("n", "<leader>d", "<cmd>NvimTreeFindFileToggle<cr>", { desc = "Toggle file explorer" })
-		keymap.set("n", "<leader>f", "<cmd>NvimTreeFocus<cr>", { desc = "Focus file explorer" })
+		keymap.set("n", "<leader>ee", "<cmd>NvimTreeFindFileToggle<cr>", { desc = "Toggle file explorer" })
+		keymap.set("n", "<leader>ef", "<cmd>NvimTreeFocus<cr>", { desc = "Focus file explorer" })
 		keymap.set("n", "<leader>ec", "<cmd>NvimTreeCollapse<cr>", { desc = "Collapse all folders" })
 		keymap.set("n", "<leader>er", "<cmd>NvimTreeRefresh<cr>", { desc = "Refresh file explorer" })
 	end,
