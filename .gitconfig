@@ -1,0 +1,21 @@
+[alias]
+  bb = !sh ~/better-branch.sh
+[core]
+  editor = nvim
+  pager = delta
+[delta]
+  navigate = true
+  side-by-side = true
+[diff]
+  colorMoved = default
+[init]
+  defaultBranch = main
+[interactive]
+  diffFilter = delta --color-only
+[fetch]
+  prune = true
+[merge]
+  conflictstyle = diff3
+[user]
+  name = Nicolás Santuccio
+  email = nico.santuccio@gmail.com

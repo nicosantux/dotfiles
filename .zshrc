@@ -5,7 +5,7 @@ export STARSHIP_CONFIG=~/.config/starship/starship.toml
 # history setup
 HISTFILE=$HOME/.zhistory
 SAVEHIST=1000
-HISTSIZE=999
+HISTSIZE=5000
 setopt share_history
 setopt hist_expire_dups_first
 setopt hist_ignore_dups
@@ -14,6 +14,10 @@ setopt hist_verify
 # completion using arrow keys (based on history)
 bindkey "^[[A" history-search-backward
 bindkey "^[[B" history-search-forward
+
+# vi mode
+bindkey -v
+bindkey -M viins 'jk' vi-cmd-mode
 
 # zsh-autosuggestions
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
@@ -26,27 +30,29 @@ eval "$(fnm env --use-on-cd)"
 
 # User configuration
 
-alias vim="nvim"
-alias pn="pnpm"
-alias px="pnpx"
-alias gfo="git fetch origin --prune"
-alias gst="git status -u"
+alias bye="rm -rf"
+alias cat="bat"
+alias cd="z"
 alias ga="git add"
 alias gaa="git add ."
-alias gct="git commit"
-alias gph="git push"
-alias gpl="git pull"
+alias gb="git branch"
+alias gbb="git bb"
 alias gco="git checkout"
-alias gsw="git switch"
+alias gct="git commit"
+alias gfo="git fetch origin --prune"
 alias gl="git log"
 alias gll="git log --oneline --decorate --graph"
-alias bye="rm -rf"
-alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"
-alias cd="z"
+alias gph="git push"
+alias gpl="git pull"
+alias gst="git status -u"
+alias gsw="git switch"
 alias lg="lazygit"
-alias tma="tmux attach"
+alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"
+alias pn="pnpm"
+alias px="pnpx"
 alias tm="tmux"
-alias cat="bat"
+alias tma="tmux attach"
+alias vim="nvim"
 
 
 # bun completions
