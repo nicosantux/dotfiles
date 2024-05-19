@@ -1,3 +1,5 @@
+export PATH="/opt/homebrew/bin:$PATH" 
+
 # starship
 eval "$(starship init zsh)"
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
@@ -28,8 +30,7 @@ source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # fnm
 eval "$(fnm env --use-on-cd)"
 
-# User configuration
-
+# aliases
 alias bye="rm -rf"
 alias cat="bat"
 alias cd="z"
@@ -54,29 +55,11 @@ alias tm="tmux"
 alias tma="tmux attach"
 alias vim="nvim"
 
-
-# bun completions
-[ -s "/Users/nicosantux/.bun/_bun" ] && source "/Users/nicosantux/.bun/_bun"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-
-# pnpm
-export PNPM_HOME="/Users/nicosantux/Library/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
-
-# FZF
-
+# fzf
 # Set up fzf key bindings and fuzzy completion
 eval "$(fzf --zsh)"
 
 # Use fd instead of fzf
-
 export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
@@ -116,7 +99,6 @@ _fzf_comprun() {
 }
 
 # Bat
-
 export BAT_THEME=kanagawa
 
 # Zoxide
