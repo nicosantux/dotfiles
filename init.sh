@@ -34,13 +34,14 @@ rm -rf ~/.vim ~/.vimrc ~/.zshrc ~/.tmux ~/.tmux.conf ~/.config/nvim ~/.config/ka
 
 echo "Creating symlinks"
 # Create necessary folders
-mkdir -p ~/.config/ ~/.config/nvim/ ~/.config/karabiner/ ~/.config/starship/
+mkdir -p ~/.config/ ~/.config/nvim/ ~/.config/karabiner/ ~/.config/starship/ ~/.config/bat/themes/
 
 # Symlinking files
 ln -s ~/dotfiles/.gitconfig ~/.gitconfig
 ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
 ln -s ~/dotfiles/.wezterm.lua ~/.wezterm.lua
 ln -s ~/dotfiles/.zshrc ~/.zshrc
+ln -s ~/dotfiles/bat-theme/kanagawa.tmTheme ~/.config/bat/themes/kanagawa.tmTheme
 ln -s ~/dotfiles/karabiner.json ~/.config/karabiner/karabiner.json
 ln -s ~/dotfiles/nvim/* ~/.config/nvim/
 ln -s ~/dotfiles/starship.toml ~/.config/starship/starship.toml
@@ -106,6 +107,14 @@ brew upgrade
 brew upgrade --cask
 brew cleanup
 
+# Install tmux tpm
+echo "Installing tmux plugin manager"
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
+# Enable bat theme
+echo "Enabling bat theme"
+bat cache --build
+
 # Install node lts
 echo "Installing Node LTS"
 fnm install --lts
@@ -114,5 +123,15 @@ fnm install --lts
 echo "Installing Dank Mono Nerd Font"
 cp -r ~/dotfiles/fonts/DankMonoNerdFont-Regular.ttf ~/Library/Fonts/
 cp -r ~/dotfiles/fonts/DankMonoNerdFont-Italic.ttf ~/Library/Fonts/
+
+# Configure git username and email
+echo "Enter your git username"
+read username
+
+echo "Enter your git email"
+read email
+
+git config --global user.name "$username"
+git config --global user.email "$email"
 
 echo "Your development environment has been configured"

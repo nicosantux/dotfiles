@@ -16,6 +16,3 @@
   prune = true
 [merge]
   conflictstyle = diff3
-[user]
-  name = Nicolás Santuccio
-  email = nico.santuccio@gmail.com
