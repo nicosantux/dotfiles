@@ -4,7 +4,6 @@ return {
 	dependencies = {
 		"hrsh7th/cmp-nvim-lsp",
 		"jose-elias-alvarez/typescript.nvim",
-		"hrsh7th/cmp-nvim-lsp",
 		{ "smjonas/inc-rename.nvim", config = true },
 	},
 	config = function()
@@ -79,6 +78,11 @@ return {
 			server = {
 				capabilities = capabilities,
 				on_attach = on_attach,
+				init_options = {
+					preferences = {
+						importModuleSpecifierPreference = "non-relative",
+					},
+				},
 			},
 		})
 

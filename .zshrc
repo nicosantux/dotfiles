@@ -1,5 +1,12 @@
 export PATH="/opt/homebrew/bin:$PATH" 
 
+autoload -Uz compinit
+compinit
+
+fpath=(~/.zsh $fpath)
+
+zstyle ':completion:*:*:git:*' script ~/.git-completion.bash
+
 # starship
 eval "$(starship init zsh)"
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
@@ -40,11 +47,20 @@ alias gb="git branch"
 alias gbb="git bb"
 alias gco="git checkout"
 alias gct="git commit"
+alias gdf="git diff"
+alias gdfs="git diff --staged"
 alias gfo="git fetch origin --prune"
 alias gl="git log"
 alias gll="git log --oneline --decorate --graph"
 alias gph="git push"
+alias gphf="git push --force-with-lease"
 alias gpl="git pull"
+alias gre="git restore"
+alias gres="git restore --staged"
+alias gr="git rebase"
+alias gri="git rebase -i"
+alias gsh="git stash -u"
+alias gshp="git stash pop"
 alias gst="git status -u"
 alias gsw="git switch"
 alias lg="lazygit"

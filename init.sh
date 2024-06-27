@@ -134,4 +134,9 @@ read email
 git config --global user.name "$username"
 git config --global user.email "$email"
 
+# Configure git zsh completion
+echo "Configuring git completions"
+curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh -o ~/.zsh/_git
+curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o ~/.git-completion.bash
+
 echo "Your development environment has been configured"

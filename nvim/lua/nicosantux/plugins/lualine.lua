@@ -7,7 +7,7 @@ return {
 
 		lualine.setup({
 			options = {
-				theme = "ayu_mirage",
+				theme = "dracula",
 				component_separators = { left = "", right = "" },
 				section_separators = { left = "", right = "" },
 			},
