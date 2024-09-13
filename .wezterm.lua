@@ -12,8 +12,8 @@ config.keys = {
 	{ key = "c", mods = "SUPER|SHIFT|CTRL|META", action = wezterm.action.ActivateCopyMode },
 }
 config.line_height = 1.2
-config.macos_window_background_blur = 60
-config.window_background_opacity = 0.7
+config.macos_window_background_blur = 20
+config.window_background_opacity = 0.85
 config.window_close_confirmation = "NeverPrompt"
 config.window_decorations = "RESIZE"
 config.window_padding = { bottom = 0, left = 12, right = 12, top = 12 }
