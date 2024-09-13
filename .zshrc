@@ -13,8 +13,8 @@ export STARSHIP_CONFIG=~/.config/starship/starship.toml
 
 # history setup
 HISTFILE=$HOME/.zhistory
-SAVEHIST=1000
-HISTSIZE=5000
+SAVEHIST=10000
+HISTSIZE=10000
 setopt share_history
 setopt hist_expire_dups_first
 setopt hist_ignore_dups
@@ -75,6 +75,8 @@ alias vim="nvim"
 # Set up fzf key bindings and fuzzy completion
 eval "$(fzf --zsh)"
 
+source <(fzf --zsh)
+
 # Use fd instead of fzf
 export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
@@ -117,3 +119,5 @@ export BAT_THEME=kanagawa
 
 # Zoxide
 eval "$(zoxide init zsh)"
+
+neofetch
