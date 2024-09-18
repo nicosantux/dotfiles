@@ -1,5 +1,5 @@
 [alias]
-  bb = !sh ~/dotfiles/better-branch.sh
+  bb = !sh ~/dotfiles/git/better-branch.sh
 [core]
   editor = nvim
   pager = delta

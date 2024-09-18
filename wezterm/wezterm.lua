@@ -9,7 +9,7 @@ config.font_size = 18
 config.initial_cols = 100
 config.initial_rows = 30
 config.keys = {
-	{ key = "c", mods = "SUPER|SHIFT|CTRL|META", action = wezterm.action.ActivateCopyMode },
+  { key = "c", mods = "SUPER|SHIFT|CTRL|META", action = wezterm.action.ActivateCopyMode },
 }
 config.line_height = 1.2
 config.macos_window_background_blur = 20

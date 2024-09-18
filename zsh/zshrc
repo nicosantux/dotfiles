@@ -29,47 +29,50 @@ bindkey -v
 bindkey -M viins 'jk' vi-cmd-mode
 
 # zsh-autosuggestions
-source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # zsh-syntax-highlighting
-source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # fnm
 eval "$(fnm env --use-on-cd)"
 
 # aliases
-alias bye="rm -rf"
-alias cat="bat"
-alias cd="z"
-alias ga="git add"
-alias gaa="git add ."
-alias gb="git branch"
-alias gbb="git bb"
-alias gco="git checkout"
-alias gct="git commit"
-alias gdf="git diff"
-alias gdfs="git diff --staged"
-alias gfo="git fetch origin --prune"
-alias gl="git log"
-alias gll="git log --oneline --decorate --graph"
-alias gph="git push"
-alias gphf="git push --force-with-lease"
-alias gpl="git pull"
-alias gre="git restore"
-alias gres="git restore --staged"
-alias gr="git rebase"
-alias gri="git rebase -i"
-alias gsh="git stash -u"
-alias gshp="git stash pop"
-alias gst="git status -u"
-alias gsw="git switch"
-alias lg="lazygit"
-alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"
-alias pn="pnpm"
-alias px="pnpx"
-alias tm="tmux"
-alias tma="tmux attach"
-alias vim="nvim"
+alias bye='rm -rf'
+alias cat='bat'
+alias cd='z'
+alias ga='git add'
+alias gaa='git add .'
+alias gb='git branch'
+alias gbb='git bb'
+alias gco='git checkout'
+alias gct='git commit'
+alias gdf='git diff'
+alias gdfs='git diff --staged'
+alias gfo='git fetch origin --prune'
+alias gl='git log'
+alias gll='git log --oneline --decorate --graph'
+alias gph='git push'
+alias gphf='git push --force-with-lease'
+alias gpl='git pull'
+alias gr='git rebase'
+alias gre='git restore'
+alias gres='git restore --staged'
+alias gri='git rebase -i'
+alias gsh='git stash -u'
+alias gshp='git stash pop'
+alias gst='git status -u'
+alias gsw='git switch'
+alias gswl='git switch $(git branch | fzf | sed "s/* //")'
+alias gswr='git switch $(git branch -r | fzf | sed "s/ *origin\///")'
+alias lg='lazygit'
+alias ls='eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions'
+alias pn='pnpm'
+alias px='pnpx'
+alias tm='tmux'
+alias tma='tmux attach'
+alias vim='nvim'
+# linux only aliases
+alias bluetooth='systemctl start bluetooth.service && bluetoothctl'
+alias wifi="nmcli dev wifi"
 
 # fzf
 # Set up fzf key bindings and fuzzy completion
@@ -119,5 +122,3 @@ export BAT_THEME=kanagawa
 
 # Zoxide
 eval "$(zoxide init zsh)"
-
-neofetch

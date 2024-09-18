@@ -1,0 +1,8 @@
+configuration {
+	modi:                       "drun";
+    show-icons:                 true;
+    display-drun:               "";
+	drun-display-format:        "{name} [<span weight='light' size='small'><i>({generic})</i></span>]";
+}
+
+@theme "spotlight"
