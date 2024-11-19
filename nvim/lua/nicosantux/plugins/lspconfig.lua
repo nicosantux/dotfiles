@@ -12,7 +12,7 @@ return {
 
 		local keymap = vim.keymap
 
-		local on_attach = function(client, bufnr)
+		local on_attach = function(_, bufnr)
 			local opts = { buffer = bufnr, remap = false }
 
 			opts.desc = "Go to definition"
@@ -48,8 +48,15 @@ return {
 		local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
 		for type, icon in pairs(signs) do
 			local hl = "DiagnosticSign" .. type
-			vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
+			vim.fn.sign_define(hl, { text = icon, texthl = hl, linehl = "DiagnosticLine" .. type, numhl = "" })
 		end
+
+		vim.cmd([[
+      highlight DiagnosticLineError guibg=#51202A 
+      highlight DiagnosticLineWarn guibg=#51412A 
+      highlight DiagnosticLineHint guibg=#1E535D 
+      highlight DiagnosticLineInfo guibg=#1E205D 
+    ]])
 
 		-- Add rounded borders to hover
 		vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
@@ -61,11 +68,15 @@ return {
 
 		-- Add rounded borders to diagnostics
 		vim.diagnostic.config({
-			virtual_text = false,
+			virtual_text = {
+				severity = nil, -- Muestra todos los tipos de diagnósticos (Error, Warn, Hint, Info).
+			},
 			float = {
-				header = false,
 				border = "rounded",
 			},
+			signs = true, -- Sigue mostrando los signos en la columna lateral.
+			underline = true, -- Sombrea el texto subrayando las líneas con diagnósticos.
+			update_in_insert = false, -- No actualiza diagnósticos mientras escribes en modo insert.
 		})
 
 		lspconfig["ts_ls"].setup({
@@ -190,7 +201,7 @@ return {
 		})
 
 		lspconfig["eslint"].setup({
-			on_attach = function(client, bufnr)
+			on_attach = function(_, bufnr)
 				vim.api.nvim_create_autocmd("BufWritePre", {
 					buffer = bufnr,
 					command = "EslintFixAll",
