@@ -29,50 +29,50 @@ bindkey -v
 bindkey -M viins 'jk' vi-cmd-mode
 
 # zsh-autosuggestions
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # zsh-syntax-highlighting
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # fnm
 eval "$(fnm env --use-on-cd)"
 
 # aliases
-alias bye='rm -rf'
-alias cat='bat'
-alias cd='z'
-alias ga='git add'
-alias gaa='git add .'
-alias gb='git branch'
-alias gbb='git bb'
-alias gco='git checkout'
-alias gct='git commit'
-alias gdf='git diff'
-alias gdfs='git diff --staged'
-alias gfo='git fetch origin --prune'
-alias gl='git log'
-alias gll='git log --oneline --decorate --graph'
-alias gph='git push'
-alias gphf='git push --force-with-lease'
-alias gpl='git pull'
-alias gr='git rebase'
-alias gre='git restore'
-alias gres='git restore --staged'
-alias gri='git rebase -i'
-alias gsh='git stash -u'
-alias gshp='git stash pop'
-alias gst='git status -u'
-alias gsw='git switch'
+alias bye="rm -rf"
+alias cat="bat"
+alias cd="z"
+alias ga="git add"
+alias gaa="git add ."
+alias gb="git branch"
+alias gbb="git bb"
+alias gbd='git branch | fzf --multi | xargs -n 1 git branch -D'
+alias gco="git checkout"
+alias gct="git commit"
+alias gdf="git diff"
+alias gdfs="git diff --staged"
+alias gfo="git fetch origin --prune"
+alias gl="git log"
+alias gll="git log --oneline --decorate --graph"
+alias gph="git push"
+alias gphf="git push --force-with-lease"
+alias gpl="git pull"
+alias gr="git rebase"
+alias gre="git restore"
+alias gres="git restore --staged"
+alias gri="git rebase -i"
+alias gsh="git stash -u"
+alias gshp="git stash pop"
+alias gst="git status -u"
+alias gsw="git switch"
 alias gswl='git switch $(git branch | fzf | sed "s/* //")'
 alias gswr='git switch $(git branch -r | fzf | sed "s/ *origin\///")'
-alias lg='lazygit'
-alias ls='eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions'
-alias pn='pnpm'
-alias px='pnpx'
-alias tm='tmux'
-alias tma='tmux attach'
-alias vim='nvim'
-# linux only aliases
-alias bluetooth='systemctl start bluetooth.service && bluetoothctl'
-alias wifi="nmcli dev wifi"
+alias lg="lazygit"
+alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"
+alias pn="pnpm"
+alias px="pnpx"
+alias tm="tmux"
+alias tma="tmux attach"
+alias vim="nvim"
 
 # fzf
 # Set up fzf key bindings and fuzzy completion
@@ -84,6 +84,12 @@ source <(fzf --zsh)
 export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
+export FZF_DEFAULT_OPTS=" \
+--color=bg+:#313244,spinner:#f5e0dc,hl:#f38ba8 \
+--color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc \
+--color=marker:#b4befe,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8 \
+--color=selected-bg:#45475a \
+--multi"
 
 # Use fd (https://github.com/sharkdp/fd) for listing path candidates.
 # The first argument to the function ($1) is the base path to start traversal
@@ -118,7 +124,24 @@ _fzf_comprun() {
 }
 
 # Bat
-export BAT_THEME=kanagawa
+export BAT_THEME=catppuccin-mocha
 
 # Zoxide
 eval "$(zoxide init zsh)"
+
+# Sketchybar
+function brew() {
+  command brew "$@" 
+
+  if [[ $* =~ "upgrade" ]] || [[ $* =~ "update" ]] || [[ $* =~ "outdated" ]]; then
+    sketchybar --trigger brew_update
+  fi
+}
+
+function mas() {
+  command mas "$@" 
+
+  if [[ $* =~ "upgrade" ]] || [[ $* =~ "update" ]] || [[ $* =~ "outdated" ]]; then
+    sketchybar --trigger brew_update
+  fi
+}
