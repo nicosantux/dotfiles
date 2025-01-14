@@ -2,6 +2,8 @@
 
 My configuration files for macOS.
 
+![Screenshot 2025-01-13 at 17 04 20](https://github.com/user-attachments/assets/11591c74-15b4-4115-af5f-38cabb9381a6)
+
 - [Aerospace](https://github.com/nikitabobko/AeroSpace)
 - [JankyBorders](https://github.com/FelixKratz/JankyBorders)
 - [Karabiner Elements](https://karabiner-elements.pqrs.org)
