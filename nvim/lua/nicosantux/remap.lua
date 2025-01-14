@@ -5,6 +5,12 @@ local keymap = vim.keymap
 -- Quit insert mode
 keymap.set("i", "jk", "<Esc>", { desc = "Exit insert mode" })
 
+-- Go to the start of the line
+keymap.set("n", "H", "^", { desc = "Go to the start of the line" })
+
+-- Go to the end of the line
+keymap.set("n", "L", "$", { desc = "Go to the end of the line" })
+
 -- Move up or down the selection
 keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move down the selection" })
 keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move up the selection" })

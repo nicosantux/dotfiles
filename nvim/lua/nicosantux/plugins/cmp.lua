@@ -47,15 +47,25 @@ return {
 				end,
 			},
 			-- sources for autocompletion
-			sources = cmp.config.sources({
+			sources = {
 				{ name = "nvim_lsp" },
 				{ name = "luasnip" },
 				{ name = "buffer" },
 				{ name = "path" },
-			}),
+			},
 			window = {
-				completion = cmp.config.window.bordered(),
-				documentation = cmp.config.window.bordered(),
+				completion = {
+					border = "rounded",
+					side_padding = 1,
+					winhighlight = "Normal:Normal,FloatBorder:Normal,CursorLine:Visual,Search:None",
+					zindex = 1001,
+				},
+				documentation = {
+					border = "rounded",
+					side_padding = 1,
+					winhighlight = "Normal:Normal,FloatBorder:Normal,CursorLine:Visual,Search:None",
+					zindex = 1001,
+				},
 			},
 		})
 	end,

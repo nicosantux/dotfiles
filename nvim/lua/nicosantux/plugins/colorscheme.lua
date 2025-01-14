@@ -1,11 +1,19 @@
 return {
-	"rebelot/kanagawa.nvim",
+	"catppuccin/nvim",
+	name = "catppuccin",
 	priority = 1000,
 	config = function()
-		require("kanagawa").setup({
-			transparent = true,
+		require("catppuccin").setup({
+			flavour = "auto",
+			background = { light = "latte", dark = "mocha" },
+			transparent_background = true,
+			styles = {
+				comments = { "italic" },
+				conditionals = { "italic" },
+				keywords = { "italic" },
+			},
 		})
 
-		vim.cmd([[colorscheme kanagawa]])
+		vim.cmd([[colorscheme catppuccin]])
 	end,
 }

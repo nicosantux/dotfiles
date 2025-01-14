@@ -13,7 +13,7 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup("nicosantux.plugins", {
 	install = {
-		colorscheme = { "kanagawa" },
+		colorscheme = { "catppuccin" },
 	},
 	checker = {
 		enabled = true,
