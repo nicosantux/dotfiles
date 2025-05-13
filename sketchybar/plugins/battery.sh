@@ -16,10 +16,8 @@ COLOR=$WHITE
 
 if [ "$PERCENTAGE" -ge 90 ]; then
   ICON=$BATTERY_100
-  DRAWING=off
 elif [ "$PERCENTAGE" -ge 60 ]; then
   ICON=$BATTERY_75
-  DRAWING=off
 elif [ "$PERCENTAGE" -ge 30 ]; then
   ICON=$BATTERY_50
 elif [ "$PERCENTAGE" -ge 10 ]; then
@@ -35,4 +33,4 @@ if [ -n "$CHARGING" ]; then
   DRAWING=off
 fi
 
-sketchybar --set $NAME drawing="$DRAWING" icon="$ICON" icon.color="$COLOR"
+sketchybar --set $NAME drawing="$DRAWING" icon="$ICON" icon.color="$COLOR" label="$PERCENTAGE%"

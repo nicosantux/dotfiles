@@ -7,7 +7,7 @@ calendar=(
   label.width=48
   label.align=right
   padding_left=8
-  update_freq=30
+  update_freq=10
   script="$PLUGIN_DIR/calendar.sh"
 )
 
