@@ -3,181 +3,152 @@ return {
 	event = { "BufReadPre", "BufNewFile" },
 	dependencies = {
 		"hrsh7th/cmp-nvim-lsp",
-		{ "smjonas/inc-rename.nvim", config = true },
+		{ "antosha417/nvim-lsp-file-operations", config = true },
 	},
 	config = function()
-		local lspconfig = require("lspconfig")
+		vim.api.nvim_create_autocmd("LspAttach", {
+			group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+			callback = function(ev)
+				local opts = { buffer = ev.buf, silent = true }
 
-		local cmp_nvim_lsp = require("cmp_nvim_lsp")
+				local client = vim.lsp.get_client_by_id(ev.data.client_id)
+				local keymap = vim.keymap
 
-		local keymap = vim.keymap
+				opts.desc = "Show LSP references"
+				keymap.set("n", "gr", "<cmd>Telescope lsp_references<CR>", opts)
 
-		local on_attach = function(_, bufnr)
-			local opts = { buffer = bufnr, remap = false }
+				opts.desc = "Go to declaration"
+				keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
 
-			opts.desc = "Go to definition"
-			keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<cr>", opts)
-
-			opts.desc = "Go to references"
-			keymap.set("n", "gr", "<cmd>Telescope lsp_references<cr>", opts)
-
-			opts.desc = "Show documentation for what is under cursor"
-			keymap.set("n", "K", vim.lsp.buf.hover, opts)
-
-			opts.desc = "Show line diagnostics"
-			keymap.set("n", "<leader>k", vim.diagnostic.open_float, opts)
-
-			opts.desc = "Go to previous diagnostic"
-			keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
-
-			opts.desc = "Go to next diagnostic"
-			keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
-
-			opts.desc = "Show available code actions"
-			keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
-
-			opts.desc = "Rename symbol"
-			keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
-
-			opts.desc = "Show signature help"
-			keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
-		end
-		-- used to enable autocompletion (assign to every lsp server config)
-		local capabilities = cmp_nvim_lsp.default_capabilities()
-
-		local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
-		for type, icon in pairs(signs) do
-			local hl = "DiagnosticSign" .. type
-			vim.fn.sign_define(hl, { text = icon, texthl = hl, linehl = "DiagnosticLine" .. type, numhl = "" })
-		end
-
-		vim.cmd([[
-      highlight DiagnosticLineError guibg=#51202A 
-      highlight DiagnosticLineWarn guibg=#51412A 
-      highlight DiagnosticLineHint guibg=#1E535D 
-      highlight DiagnosticLineInfo guibg=#1E205D 
-    ]])
-
-		-- Add rounded borders to hover
-		vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-			border = "rounded",
-		})
-
-		--  Set background color for floating windows
-		vim.cmd([[ highlight NormalFloat guibg=#2a2a37 ]])
-
-		-- Add rounded borders to diagnostics
-		vim.diagnostic.config({
-			virtual_text = {
-				severity = nil, -- Muestra todos los tipos de diagnósticos (Error, Warn, Hint, Info).
-			},
-			float = {
-				border = "rounded",
-			},
-			signs = true, -- Sigue mostrando los signos en la columna lateral.
-			underline = true, -- Sombrea el texto subrayando las líneas con diagnósticos.
-			update_in_insert = false, -- No actualiza diagnósticos mientras escribes en modo insert.
-		})
-
-		lspconfig["ts_ls"].setup({
-			capabilities = capabilities,
-			on_attach = function(client, bufnr)
-				on_attach(client, bufnr)
-
-				local opts = { buffer = bufnr, remap = false }
-
-				opts.desc = "Add Missing Imports"
-				vim.keymap.set("n", "<leader>ai", function()
-					vim.lsp.buf.code_action({
-						context = { only = { "source.addMissingImports.ts" }, diagnostics = {} },
-						apply = true,
-					})
+				opts.desc = "Go to previous diagnostic"
+				keymap.set("n", "[d", function()
+					vim.diagnostic.jump({ count = -1, float = true })
 				end, opts)
 
-				opts.desc = "Organize Imports"
-				keymap.set("n", "<leader>oi", function()
-					vim.lsp.buf.execute_command({
-						command = "_typescript.organizeImports",
-						arguments = { vim.api.nvim_buf_get_name(0) },
-					})
+				opts.desc = "Go to next diagnostic"
+				keymap.set("n", "]d", function()
+					vim.diagnostic.jump({ count = 1, float = true })
 				end, opts)
 
-				opts.desc = "Rename File"
-				vim.keymap.set("n", "<leader>rf", function()
-					local old_name = vim.api.nvim_buf_get_name(0)
+				opts.desc = "Show LSP definitions"
+				keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts)
 
-					-- Prompt for new filename
-					vim.ui.input({ prompt = "New filename: ", default = old_name }, function(new_name)
-						-- Verifica si el nuevo nombre es válido
-						if not new_name or new_name:gsub("^%s*(.-)%s*$", "%1") == "" or new_name == old_name then
-							print("No changes made.")
-							return
-						end
+				opts.desc = "Show LSP implementations"
+				keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts)
 
-						new_name = new_name:gsub("^%s*(.-)%s*$", "%1") -- Elimina espacios en blanco
+				opts.desc = "Show LSP type definitions"
+				keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", opts)
 
-						-- Rename the file
-						local success, err = pcall(function()
-							vim.fn.rename(old_name, new_name)
-						end)
+				opts.desc = "See available code actions"
+				keymap.set({ "n", "v" }, "<leader>ca", function()
+					vim.lsp.buf.code_action()
+				end, opts)
 
-						if not success then
-							print("Error renaming file: " .. err)
-							return
-						end
+				opts.desc = "Rename Symbol"
+				keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
 
-						-- Execute the LSP command to rename the file
-						vim.lsp.buf.execute_command({
-							command = "_typescript.applyRenameFile",
-							arguments = {
-								{
-									sourceUri = vim.uri_from_fname(old_name),
-									targetUri = vim.uri_from_fname(new_name),
-								},
-							},
+				opts.desc = "Show buffer diagnostics"
+				keymap.set("n", "<leader>K", "<cmd>Telescope diagnostics bufnr=0<CR>", opts)
+
+				opts.desc = "Show line diagnostics"
+				keymap.set("n", "<leader>k", vim.diagnostic.open_float, opts)
+
+				opts.desc = "Show documentation for what is under cursor"
+				keymap.set("n", "K", vim.lsp.buf.hover, opts)
+
+				opts.desc = "Restart LSP"
+				keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts)
+
+				keymap.set("i", "<C-h>", function()
+					vim.lsp.buf.signature_help()
+				end, opts)
+
+				-- vtsls-specific bindings
+				if client ~= nil and client.name == "vtsls" then
+					keymap.set("n", "<leader>oi", function()
+						vim.lsp.buf.code_action({
+							context = { only = { "source.organizeImports" }, diagnostics = {} },
+							apply = true,
 						})
+					end, { buffer = ev.buf, desc = "Organize Imports" })
 
-						-- Close the old named buffer
-						vim.api.nvim_buf_delete(0, { force = true })
+					keymap.set("n", "<leader>ai", function()
+						vim.lsp.buf.code_action({
+							context = { only = { "source.addMissingImports.ts" }, diagnostics = {} },
+							apply = true,
+						})
+					end, { buffer = ev.buf, desc = "Add missing imports" })
 
-						-- Open the new named buffer
-						vim.api.nvim_command(":e " .. new_name)
-						print("Renamed file from " .. old_name .. " to " .. new_name)
-					end)
-				end, opts)
-
-				opts.desc = "Remove unused imports"
-				vim.keymap.set("n", "<leader>ru", function()
-					vim.lsp.buf.code_action({
-						context = { only = { "source.removeUnusedImports.ts" }, diagnostics = {} },
-						apply = true,
-					})
-				end, opts)
+					keymap.set("n", "<leader>ru", function()
+						vim.lsp.buf.code_action({
+							context = { only = { "source.removeUnused" }, diagnostics = {} },
+							apply = true,
+						})
+					end, { buffer = ev.buf, desc = "Remove unused imports" })
+				end
 			end,
 		})
 
-		-- configure html server
-		lspconfig["html"].setup({
+		local signs = {
+			[vim.diagnostic.severity.ERROR] = " ",
+			[vim.diagnostic.severity.WARN] = " ",
+			[vim.diagnostic.severity.HINT] = "󰠠 ",
+			[vim.diagnostic.severity.INFO] = " ",
+		}
+
+		vim.diagnostic.config({
+			signs = {
+				text = signs,
+			},
+			virtual_text = true,
+			underline = true,
+			update_in_insert = false,
+		})
+
+		local lspconfig = require("lspconfig")
+		local cmp_nvim_lsp = require("cmp_nvim_lsp")
+		local capabilities = cmp_nvim_lsp.default_capabilities()
+
+		lspconfig.lua_ls.setup({
 			capabilities = capabilities,
-			on_attach = on_attach,
+			settings = {
+				Lua = {
+					diagnostics = {
+						globals = { "vim" },
+					},
+					completion = {
+						callSnippet = "Replace",
+					},
+					workspace = {
+						library = {
+							[vim.fn.expand("$VIMRUNTIME/lua")] = true,
+							[vim.fn.stdpath("config") .. "/lua"] = true,
+						},
+					},
+				},
+			},
+		})
+
+		-- configure html server
+		lspconfig.html.setup({
+			capabilities = capabilities,
 		})
 
 		-- configure css server
-		lspconfig["cssls"].setup({
+		lspconfig.cssls.setup({
 			capabilities = capabilities,
-			on_attach = on_attach,
 		})
 
 		-- configure tailwindcss server
-		lspconfig["tailwindcss"].setup({
+		lspconfig.tailwindcss.setup({
 			capabilities = capabilities,
-			on_attach = on_attach,
 			settings = {
 				tailwindCSS = {
 					experimental = {
 						classRegex = {
 							{ "cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
 							{ "cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)" },
+							{ "cn\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)" },
 						},
 					},
 				},
@@ -185,9 +156,8 @@ return {
 		})
 
 		-- configure emmet language server
-		lspconfig["emmet_ls"].setup({
+		lspconfig.emmet_ls.setup({
 			capabilities = capabilities,
-			on_attach = on_attach,
 			filetypes = {
 				"css",
 				"html",
@@ -200,6 +170,7 @@ return {
 			},
 		})
 
+		-- configure eslint language server
 		lspconfig["eslint"].setup({
 			on_attach = function(_, bufnr)
 				vim.api.nvim_create_autocmd("BufWritePre", {
@@ -209,22 +180,41 @@ return {
 			end,
 		})
 
-		-- configure lua server (with special settings)
-		lspconfig["lua_ls"].setup({
+		-- configure vtsls (typescript) language server
+		lspconfig.vtsls.setup({
 			capabilities = capabilities,
-			on_attach = on_attach,
-			settings = { -- custom settings for lua
-				Lua = {
-					-- make the language server recognize "vim" global
-					diagnostics = {
-						globals = { "vim" },
-					},
-					workspace = {
-						-- make language server aware of runtime files
-						library = {
-							[vim.fn.expand("$VIMRUNTIME/lua")] = true,
-							[vim.fn.stdpath("config") .. "/lua"] = true,
+			filetypes = {
+				"javascript",
+				"javascriptreact",
+				"javascript.jsx",
+				"typescript",
+				"typescriptreact",
+				"typescript.tsx",
+			},
+			settings = {
+				complete_function_calls = true,
+				vtsls = {
+					enableMoveToFileCodeAction = true,
+					autoUseWorkspaceTsdk = true,
+					experimental = {
+						maxInlayHintLength = 30,
+						completion = {
+							enableServerSideFuzzyMatch = true,
 						},
+					},
+				},
+				typescript = {
+					updateImportsOnFileMove = { enabled = "always" },
+					suggest = {
+						completeFunctionCalls = true,
+					},
+					inlayHints = {
+						enumMemberValues = { enabled = true },
+						functionLikeReturnTypes = { enabled = true },
+						parameterNames = { enabled = "literals" },
+						parameterTypes = { enabled = true },
+						propertyDeclarationTypes = { enabled = true },
+						variableTypes = { enabled = false },
 					},
 				},
 			},

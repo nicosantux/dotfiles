@@ -32,8 +32,8 @@ keymap.set("n", "N", "Nzzzv")
 -- Tabs
 keymap.set("n", "<C-t>", "<cmd>tabnew<CR>", { desc = "Open a new tab" })
 keymap.set("n", "<C-w>", "<cmd>bdelete<CR>", { desc = "Close tab" })
-keymap.set("n", "<tab>", "<cmd>BufferLineCycleNext<CR>", { desc = "Go to next tab" })
-keymap.set("n", "<s-tab>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Go to previous tab" })
+keymap.set("n", "<tab>", "<cmd>bnext<CR>", { desc = "Go to next tab" })
+keymap.set("n", "<s-tab>", "<cmd>bprev<CR>", { desc = "Go to previous tab" })
 
 -- Editor split view
 keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" })

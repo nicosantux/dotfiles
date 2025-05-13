@@ -9,13 +9,8 @@ return {
 
 		nvimtree.setup({
 			sort_by = "case_sensitive",
-			view = {
-				side = "right",
-				width = 50,
-			},
-			renderer = {
-				group_empty = true,
-			},
+			view = { side = "right", width = 50 },
+			renderer = { group_empty = true },
 		})
 
 		-- keymaps

@@ -1,23 +1,41 @@
 return {
 	"stevearc/conform.nvim",
-	lazy = true,
 	event = { "BufReadPre", "BufNewFile" },
 	config = function()
 		local conform = require("conform")
 
 		conform.setup({
+			formatters = {
+				["markdown-toc"] = {
+					condition = function(_, ctx)
+						for _, line in ipairs(vim.api.nvim_buf_get_lines(ctx.buf, 0, -1, false)) do
+							if line:find("<!%-%- toc %-%->") then
+								return true
+							end
+						end
+					end,
+				},
+				["markdownlint-cli2"] = {
+					condition = function(_, ctx)
+						local diag = vim.tbl_filter(function(d)
+							return d.source == "markdownlint"
+						end, vim.diagnostic.get(ctx.buf))
+						return #diag > 0
+					end,
+				},
+			},
 			formatters_by_ft = {
-				css = { "prettier" },
-				scss = { "prettier" },
-				html = { "prettier" },
 				javascript = { "prettier" },
+				typescript = { "prettier" },
 				javascriptreact = { "prettier" },
+				typescriptreact = { "prettier" },
+				css = { "prettier" },
+				html = { "prettier" },
 				json = { "prettier" },
+				yaml = { "prettier" },
 				lua = { "stylua" },
 				markdown = { "prettier" },
-				typescript = { "prettier" },
-				typescriptreact = { "prettier" },
-				yaml = { "prettier" },
+				["markdown.mdx"] = { "prettier", "markdownlint-cli2", "markdown-toc" },
 			},
 			format_on_save = {
 				lsp_fallback = true,
@@ -32,6 +50,6 @@ return {
 				async = false,
 				timeout_ms = 1000,
 			})
-		end, { desc = "Format file or range (in visual mode)" })
+		end, { desc = "Format document" })
 	end,
 }
