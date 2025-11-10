@@ -1,0 +1,15 @@
+adjust-cell-height = 2
+background-blur-radius = 20
+background-opacity = 0.85
+cursor-color = #fff
+cursor-style-blink = false
+cursor-text = #000
+font-family = DankMono Nerd Font
+font-size = 16
+font-style-bold = false
+font-thicken = true
+macos-titlebar-style = hidden
+mouse-hide-while-typing = true
+theme = dark:Catppuccin Mocha,light:Catppuccin Latte
+window-padding-x = 12
+window-padding-y = 12,4
