@@ -1,4 +1,5 @@
 export PATH="/opt/homebrew/bin:$PATH" 
+export EDITOR="nvim"
 
 autoload -Uz compinit
 compinit
@@ -38,6 +39,24 @@ source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 eval "$(fnm env --use-on-cd)"
 
 # aliases
+
+# Detect package manager and run dev script
+run_dev() {
+  if [[ -f package-lock.json ]]; then
+    npm run dev "$@"
+  elif [[ -f pnpm-lock.yaml ]]; then
+    pnpm dev "$@"
+  elif [[ -f yarn.lock ]]; then
+    yarn dev "$@"
+  elif [[ -f bun.lockb ]]; then
+    bun run dev "$@"
+  else
+    echo "❌ No package manager found."
+    return 1
+  fi
+}
+
+alias dev='run_dev'
 alias bye="rm -rf"
 alias cat="bat"
 alias cd="z"
@@ -68,6 +87,7 @@ alias gswl='git switch $(git branch | fzf | sed "s/* //")'
 alias gswr='git switch $(git branch -r | fzf | sed "s/ *origin\///")'
 alias lg="lazygit"
 alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"
+alias oc="opencode"
 alias pn="pnpm"
 alias px="pnpx"
 alias tm="tmux"
@@ -86,10 +106,14 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
 export FZF_DEFAULT_OPTS=" \
 --color=bg+:#313244,spinner:#f5e0dc,hl:#f38ba8 \
---color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc \
---color=marker:#b4befe,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8 \
---color=selected-bg:#45475a \
---multi"
+--color=fg:#CDD6F4,header:#F38BA8,info:#CBA6F7,pointer:#F5E0DC \
+--color=marker:#B4BEFE,fg+:#CDD6F4,prompt:#CBA6F7,hl+:#F38BA8 \
+--color=selected-bg:#45475A \
+--color=border:#6C7086,label:#CDD6F4 \
+--multi \
+--bind ctrl-u:preview-up,ctrl-d:preview-down \
+--layout=reverse \
+--height=100%"
 
 # Use fd (https://github.com/sharkdp/fd) for listing path candidates.
 # The first argument to the function ($1) is the base path to start traversal
@@ -102,6 +126,22 @@ _fzf_compgen_path() {
 _fzf_compgen_dir() {
   fd --type=d --hidden --exclude .git . "$1"
 }
+
+__fzf_git_pick_commit() {
+  local commit
+  commit=$(git log --color=always --pretty=format:'%C(auto)%h %s %C(black)%C(bold)%cr %Creset %an' \
+    | fzf --ansi --no-sort --layout=reverse \
+          --preview "echo {} | cut -d' ' -f1 | xargs git show --color=always" \
+          --preview-window=right:50%:wrap \
+          --bind 'ctrl-d:preview-page-down,ctrl-u:preview-page-up' \
+    | awk '{print $1}') || return
+
+  LBUFFER+="$commit"
+  zle reset-prompt
+}
+zle -N __fzf_git_pick_commit
+
+bindkey '^H' __fzf_git_pick_commit
 
 show_file_or_dir_preview="if [ -d {} ]; then eza --tree --color=always {} | head -200; else bat -n --color=always --line-range :500 {}; fi"
 
@@ -124,7 +164,7 @@ _fzf_comprun() {
 }
 
 # Bat
-export BAT_THEME=catppuccin-mocha
+export BAT_THEME="Catppuccin Mocha"
 
 # Zoxide
 eval "$(zoxide init zsh)"
