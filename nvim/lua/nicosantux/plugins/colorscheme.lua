@@ -3,11 +3,13 @@ return {
 		"catppuccin/nvim",
 		lazy = false,
 		name = "catppuccin",
+    version = "1.10.0",
 		priority = 1000,
 		opts = {
-			flavour = "auto",
+			flavour = "mocha",
 			background = { light = "latte", dark = "mocha" },
 			transparent_background = true,
+      term_colors = true,
 			styles = {
 				comments = { "italic" },
 				conditionals = { "italic" },
@@ -24,7 +26,7 @@ return {
 			undercurl = true, -- enable undercurls
 			commentStyle = { italic = true },
 			functionStyle = {},
-			keywordStyle = { italic = false },
+			keywordStyle = { italic = true },
 			statementStyle = { bold = true },
 			typeStyle = {},
 			transparent = true, -- do not set background color
@@ -76,4 +78,26 @@ return {
 			},
 		},
 	},
+  {
+    "rose-pine/neovim",
+		lazy = false,
+		priority = 1000,
+    name = "rose-pine",
+    opts = {
+      variant = "auto", -- auto, main, moon, or dawn
+      dark_variant = "moon", -- main, moon, or dawn
+      dim_inactive_windows = false,
+      extend_background_behind_borders = true,
+      enable = {
+        terminal = true,
+        legacy_highlights = true, -- Improve compatibility for previous versions of Neovim
+        migrations = true, -- Handle deprecated options automatically
+      },
+      styles = {
+        bold = true,
+        italic = true,
+        transparency = true,
+      },
+    },
+  }
 }

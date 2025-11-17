@@ -23,4 +23,7 @@ return {
 			lsp_doc_border = true, -- add a border to hover docs and signature help
 		},
 	},
+	keys = {
+		{ "<leader>nt", "<cmd>NoiceTelescope<cr>", desc = "Show Noice Telescope" },
+	},
 }

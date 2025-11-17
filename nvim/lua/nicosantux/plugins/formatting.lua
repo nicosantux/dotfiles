@@ -25,29 +25,31 @@ return {
 				},
 			},
 			formatters_by_ft = {
-				javascript = { "prettier" },
-				typescript = { "prettier" },
-				javascriptreact = { "prettier" },
-				typescriptreact = { "prettier" },
+				astro = { "prettier" },
 				css = { "prettier" },
 				html = { "prettier" },
+				javascript = { "prettier" },
+				javascriptreact = { "prettier" },
 				json = { "prettier" },
-				yaml = { "prettier" },
 				lua = { "stylua" },
 				markdown = { "prettier" },
+				mdx = { "prettier" },
 				["markdown.mdx"] = { "prettier", "markdownlint-cli2", "markdown-toc" },
+				typescript = { "prettier" },
+				typescriptreact = { "prettier" },
+				yaml = { "prettier" },
 			},
 			format_on_save = {
-				lsp_fallback = true,
 				async = false,
+				lsp_fallback = true,
 				timeout_ms = 1000,
 			},
 		})
 
 		vim.keymap.set({ "n", "v" }, "<leader>mp", function()
 			conform.format({
-				lsp_fallback = true,
 				async = false,
+				lsp_fallback = true,
 				timeout_ms = 1000,
 			})
 		end, { desc = "Format document" })
