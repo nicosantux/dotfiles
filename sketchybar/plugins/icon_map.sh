@@ -90,6 +90,9 @@ function __icon_map() {
    "Calibre")
         icon_result=":book:"
         ;;
+   "Claude")
+        icon_result=":claude:"
+        ;;
    "Brave Browser")
         icon_result=":brave_browser:"
         ;;
@@ -206,6 +209,9 @@ function __icon_map() {
         ;;
    "GoLand")
         icon_result=":goland:"
+        ;;
+   "Ghostty")
+        icon_result=":ghostty:"
         ;;
    "Chromium" | "Google Chrome" | "Google Chrome Canary")
         icon_result=":google_chrome:"
