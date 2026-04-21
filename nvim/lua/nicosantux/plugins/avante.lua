@@ -15,7 +15,7 @@ return {
 		provider = "copilot",
 		providers = {
 			copilot = {
-				model = "gpt-4.1",
+				model = "gpt-5-mini",
 			},
 		},
 		-- system_prompt as function ensures LLM always has latest MCP server state

@@ -16,15 +16,10 @@ return {
 				lualine_c = {
 					{
 						"buffers",
-						symbols = { alternate_file = "󰒲 " },
+						symbols = { alternate_file = " " },
 					},
 				},
 				lualine_x = {
-					{
-						require("noice").api.statusline.mode.get,
-						cond = require("noice").api.statusline.mode.has,
-						color = { fg = "#ff9e64" },
-					},
 					{
 						lazy_status.updates,
 						cond = lazy_status.has_updates,

@@ -30,7 +30,7 @@ vim.api.nvim_create_autocmd("FileType", {
 -- syntax highlighting for dotenv files
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 	group = vim.api.nvim_create_augroup("dotenv_ft", { clear = true }),
-	pattern = { ".env*", "env.*" },
+	pattern = { ".env*" },
 	callback = function()
 		vim.bo.filetype = "dosini"
 	end,
