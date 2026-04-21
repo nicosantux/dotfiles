@@ -87,7 +87,7 @@ alias gswl='git switch $(git branch | fzf | sed "s/* //")'
 alias gswr='git switch $(git branch -r | fzf | sed "s/ *origin\///")'
 alias lg="lazygit"
 alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"
-alias oc="opencode"
+alias oc="opencode --port"
 alias pn="pnpm"
 alias px="pnpx"
 alias tm="tmux"
@@ -184,4 +184,22 @@ function mas() {
   if [[ $* =~ "upgrade" ]] || [[ $* =~ "update" ]] || [[ $* =~ "outdated" ]]; then
     sketchybar --trigger brew_update
   fi
+}
+
+killport() {
+  _get_command() {
+    ps -p $1 | awk 'NR>1 {for (i=4; i<=NF; i++) {printf "%s ", $i}; print ""}'
+  }
+
+  lsof -iTCP -sTCP:LISTEN -P | awk '{print $2, $9}' | uniq | tail -n +2 | \
+    while read pid port; do
+      local command=$(_get_command $pid)
+      local port_clean=$(echo $port | sed 's/localhost//')
+      printf "%-6s %-10s %s\n" "$pid" "$port_clean" "$command"
+    done | \
+    fzf --exact --tac \
+        --preview 'pstree -p $(echo {} | awk "{print \$1}")' \
+        --preview-window=down,30% \
+        --header "Select a process to kill (PID Port Command):" | \
+    awk '{print $1}' | xargs -r kill -9
 }
