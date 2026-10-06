@@ -2,10 +2,13 @@
 
 echo "Tapping Brew..."
 tap=(
+  "Giammarco-Ferranti/deja"
   "felixkratz/formulae"
   "gentleman-programming/tap"
+  "my-monkeys/tap"
   "nikitabobko/tap"
   "oven-sh/bun"
+  "rtk-ai/tap"
 )
 
 for tap in "${tap[@]}"; do
@@ -19,8 +22,13 @@ done
 
 # Define an array of packages to install using Homebrew.
 packages=(
+  "Giammarco-Ferranti/deja/deja"
   "bat"
+  "blueutil"
   "carapace"
+  "colima"
+  "docker"
+  "docker-compose"
   "eza"
   "fd"
   "felixkratz/formulae/borders"
@@ -31,6 +39,8 @@ packages=(
   "gh"
   "git"
   "git-delta"
+  "herdr"
+  "ical-buddy"
   "jq"
   "lazygit"
   "mas"
@@ -39,20 +49,20 @@ packages=(
   "oven-sh/bun/bun"
   "pstree"
   "ripgrep"
+  "rtk-ai/tap/rtk"
   "starship"
+  "switchaudio-osx"
   "tmux"
-  "tree"
   "tree-sitter-cli"
   "yazi"
+  "zinit"
   "zoxide"
   "zsh"
-  "zsh-autosuggestions"
-  "zsh-syntax-highlighting"
 )
 
 # Loop over the array to install each application.
 for package in "${packages[@]}"; do
-  if brew list --formula | grep -q "^$package\$"; then
+  if brew list --formula "${package##*/}" &>/dev/null; then
     echo "$package is already installed. Skipping..."
   else
     echo "Installing $package..."
@@ -62,7 +72,9 @@ done
 
 # Add the Homebrew zsh to allowed shells.
 echo "Changing default shell to Homebrew zsh..."
-echo "$(brew --prefix)/bin/zsh" | sudo tee -a /etc/shells >/dev/null
+if ! grep -qx "$(brew --prefix)/bin/zsh" /etc/shells; then
+  echo "$(brew --prefix)/bin/zsh" | sudo tee -a /etc/shells >/dev/null
+fi
 # Set the Homebrew zsh as default shell.
 chsh -s "$(brew --prefix)/bin/zsh"
 
@@ -71,14 +83,16 @@ apps=(
   "affinity"
   "arc"
   "claude"
+  "claude-code"
   "discord"
-  "docker-desktop"
   "figma"
   "font-sf-pro"
   "font-sketchybar-app-font"
   "ghostty"
+  "google-chrome"
   "karabiner-elements"
   "keka"
+  "my-monkeys/tap/opensuperwhisper"
   "nikitabobko/tap/aerospace"
   "notion"
   "raycast"
@@ -89,7 +103,7 @@ apps=(
 
 # Loop over the array to install each application.
 for app in "${apps[@]}"; do
-  if brew list --cask | grep -q "^$app\$"; then
+  if brew list --cask "${app##*/}" &>/dev/null; then
     echo "$app is already installed. Skipping..."
   else
     echo "Installing $app..."

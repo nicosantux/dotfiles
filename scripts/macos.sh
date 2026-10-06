@@ -19,9 +19,6 @@ defaults write com.apple.LaunchServices LSQuarantine -bool false
 # Disable automatic capitalization as it’s annoying when typing code
 defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
 
-# Disable automatic period when using the space bar twice.
-defaults write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false
-
 # Disable auto-correct
 defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
 
@@ -69,7 +66,7 @@ defaults write NSGlobalDomain AppleLanguages -array "en-AR" "es-AR"
 # Set the timezone; see `sudo systemsetup -listtimezones` for other values
 sudo systemsetup -settimezone "America/Argentina/Buenos_Aires" > /dev/null
 
-# Stop iTunes from responding to the keyboard media keys
+# Stop Apple Music from responding to the keyboard media keys
 launchctl unload -w /System/Library/LaunchAgents/com.apple.rcd.plist 2> /dev/null
 
 
