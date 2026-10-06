@@ -19,8 +19,7 @@ return {
 	},
 	{
 		"rebelot/kanagawa.nvim",
-		lazy = false,
-		priority = 1000,
+		lazy = true,
 		opts = {
 			compile = false, -- enable compiling the colorscheme
 			undercurl = true, -- enable undercurls
@@ -65,11 +64,6 @@ return {
 					-- set their background accordingly if you wish to keep them dark and borderless
 					LazyNormal = { bg = theme.ui.bg_m3, fg = theme.ui.fg_dim },
 					MasonNormal = { bg = theme.ui.bg_m3, fg = theme.ui.fg_dim },
-					TelescopeTitle = { fg = theme.ui.special, bold = true },
-					TelescopePromptBorder = { fg = theme.ui.special },
-					TelescopeResultsNormal = { fg = theme.ui.fg_dim },
-					TelescopeResultsBorder = { fg = theme.ui.special },
-					TelescopePreviewBorder = { fg = theme.ui.special },
 				}
 			end,
 			theme = "wave", -- Load "wave" theme when 'background' option is not set
@@ -80,8 +74,7 @@ return {
 	},
   {
     "rose-pine/neovim",
-		lazy = false,
-		priority = 1000,
+		lazy = true,
     name = "rose-pine",
     opts = {
       variant = "auto", -- auto, main, moon, or dawn

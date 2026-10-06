@@ -1,14 +1,19 @@
-return {
-	filetypes = {
-		"javascript",
-		"javascriptreact",
-		"javascript.jsx",
-		"typescript",
-		"typescriptreact",
-		"typescript.tsx",
+local language_settings = {
+	updateImportsOnFileMove = { enabled = "always" },
+	suggest = { completeFunctionCalls = true },
+	inlayHints = {
+		enumMemberValues = { enabled = true },
+		functionLikeReturnTypes = { enabled = true },
+		parameterNames = { enabled = "literals" },
+		parameterTypes = { enabled = true },
+		propertyDeclarationTypes = { enabled = true },
+		variableTypes = { enabled = false },
 	},
+	format = { enable = false },
+}
+
+return {
 	settings = {
-		complete_function_calls = true,
 		vtsls = {
 			enableMoveToFileCodeAction = true,
 			autoUseWorkspaceTsdk = true,
@@ -19,17 +24,7 @@ return {
 				},
 			},
 		},
-		typescript = {
-			updateImportsOnFileMove = { enabled = "always" },
-			suggest = { completeFunctionCalls = true },
-			inlayHints = {
-				enumMemberValues = { enabled = true },
-				functionLikeReturnTypes = { enabled = true },
-				parameterNames = { enabled = "literals" },
-				parameterTypes = { enabled = true },
-				propertyDeclarationTypes = { enabled = true },
-				variableTypes = { enabled = false },
-			},
-		},
+		typescript = vim.deepcopy(language_settings),
+		javascript = vim.deepcopy(language_settings),
 	},
 }

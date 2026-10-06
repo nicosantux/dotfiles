@@ -1,4 +1,5 @@
 vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
 local keymap = vim.keymap
 
@@ -23,7 +24,7 @@ keymap.set("n", "<C-d>", "<C-d>zz")
 keymap.set("n", "<C-u>", "<C-u>zz")
 
 -- Select all
-keymap.set("n", "<C-a>", "ggVG")
+keymap.set("n", "<leader>A", "ggVG", { desc = "Select all" })
 
 -- Center the editor when move into selections
 keymap.set("n", "n", "nzzzv")

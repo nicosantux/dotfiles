@@ -7,7 +7,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		local keymap = vim.keymap
 
 		opts.desc = "Show LSP references"
-		keymap.set("n", "gr", "<cmd>Telescope lsp_references<CR>", opts)
+		keymap.set("n", "gr", Snacks.picker.lsp_references, opts)
 
 		opts.desc = "Go to declaration"
 		keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
@@ -23,13 +23,13 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		end, opts)
 
 		opts.desc = "Show LSP definitions"
-		keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts)
+		keymap.set("n", "gd", Snacks.picker.lsp_definitions, opts)
 
 		opts.desc = "Show LSP implementations"
-		keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts)
+		keymap.set("n", "gi", Snacks.picker.lsp_implementations, opts)
 
 		opts.desc = "Show LSP type definitions"
-		keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", opts)
+		keymap.set("n", "gt", Snacks.picker.lsp_type_definitions, opts)
 
 		opts.desc = "See available code actions"
 		keymap.set({ "n", "v" }, "<leader>ca", function()
@@ -40,7 +40,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
 
 		opts.desc = "Show buffer diagnostics"
-		keymap.set("n", "<leader>K", "<cmd>Telescope diagnostics bufnr=0<CR>", opts)
+		keymap.set("n", "<leader>K", Snacks.picker.diagnostics_buffer, opts)
 
 		opts.desc = "Show line diagnostics"
 		keymap.set("n", "<leader>k", vim.diagnostic.open_float, opts)
@@ -50,10 +50,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 		opts.desc = "Restart LSP"
 		keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts)
-
-		keymap.set("i", "<C-h>", function()
-			vim.lsp.buf.signature_help()
-		end, opts)
 
 		-- vtsls-specific bindings
 		if client ~= nil and client.name == "vtsls" then
@@ -91,6 +87,7 @@ vim.lsp.enable({
 	"lua_ls",
 	"tailwindcss",
 	"vtsls",
+	"yamlls",
 })
 
 vim.diagnostic.config({
@@ -103,6 +100,15 @@ vim.diagnostic.config({
 		},
 	},
 	virtual_text = true,
+	virtual_lines = false,
 	underline = true,
 	update_in_insert = false,
 })
+
+vim.keymap.set("n", "<leader>dv", function()
+	local virtual_lines = not vim.diagnostic.config().virtual_lines
+	vim.diagnostic.config({
+		virtual_lines = virtual_lines and { current_line = true } or false,
+		virtual_text = not virtual_lines,
+	})
+end, { desc = "Toggle diagnostic virtual lines" })

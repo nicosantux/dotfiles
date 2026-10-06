@@ -1,5 +1,6 @@
 return {
 	"stevearc/oil.nvim",
+	lazy = false,
 	dependencies = { "nvim-tree/nvim-web-devicons" },
 	config = function()
 		require("oil").setup({
@@ -21,7 +22,7 @@ return {
 		-- opens parent dir over current active window
 		vim.keymap.set("n", "<leader>of", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 		-- open parent dir in float window
-		vim.keymap.set("n", "<leader>oe", require("oil").toggle_float)
+		vim.keymap.set("n", "<leader>oe", require("oil").toggle_float, { desc = "Open parent directory in float" })
 
 		vim.api.nvim_create_autocmd("FileType", {
 			pattern = "oil", -- Adjust if Oil uses a specific file type identifier

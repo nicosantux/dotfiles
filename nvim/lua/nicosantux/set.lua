@@ -1,3 +1,6 @@
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 local opt = vim.opt
 
 -- line numbers
@@ -9,7 +12,6 @@ opt.tabstop = 2
 opt.softtabstop = 2
 opt.shiftwidth = 2
 opt.expandtab = true
-opt.smartindent = true
 opt.autoindent = true
 
 -- line wrapping
@@ -24,6 +26,7 @@ opt.smartcase = true
 opt.termguicolors = true
 opt.signcolumn = "yes"
 opt.colorcolumn = "100"
+opt.winborder = "rounded"
 
 -- backspace
 opt.backspace = "indent,eol,start"
@@ -45,10 +48,7 @@ opt.incsearch = true
 
 opt.scrolloff = 8
 opt.isfname:append("@-@")
-opt.updatetime = 50
+opt.updatetime = 250
 
 -- spellcheck
 opt.spelllang = "en_us,es"
-opt.spell = true
-
-vim.cmd([[autocmd FileType gitcommit let &colorcolumn = '73']])

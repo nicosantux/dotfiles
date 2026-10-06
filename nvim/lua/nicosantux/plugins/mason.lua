@@ -1,10 +1,10 @@
 return {
-	"williamboman/mason.nvim",
-	lazy = false,
+	"mason-org/mason.nvim",
+	cmd = { "Mason", "MasonInstall", "MasonUpdate", "MasonLog" },
+	event = { "BufReadPre", "BufNewFile" },
 	dependencies = {
-		"williamboman/mason-lspconfig.nvim",
+		"mason-org/mason-lspconfig.nvim",
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
-		"hrsh7th/cmp-nvim-lsp",
 		"neovim/nvim-lspconfig",
 	},
 	config = function()
@@ -29,23 +29,25 @@ return {
 			ensure_installed = {
 				"astro",
 				"cssls",
-				"emmet_language_server",
 				"emmet_ls",
+				"eslint",
 				"html",
 				"lua_ls",
-				"marksman",
 				"tailwindcss",
 				"vtsls",
 				"jsonls",
+				"yamlls",
 			},
-			automatic_installation = true,
 		})
 
 		mason_tool_installer.setup({
 			ensure_installed = {
-				"prettier",
-				"stylua",
 				"eslint",
+				"eslint_d",
+				"markdown-toc",
+				"prettier",
+				"prettierd",
+				"stylua",
 			},
 		})
 	end,

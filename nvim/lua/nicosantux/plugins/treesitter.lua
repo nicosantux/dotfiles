@@ -3,7 +3,6 @@ return {
 		"nvim-treesitter/nvim-treesitter",
 		lazy = false,
 		branch = "main",
-		event = { "BufReadPre", "BufNewFile" },
 		build = ":TSUpdate",
 		config = function()
 			local ts = require("nvim-treesitter")
@@ -12,16 +11,23 @@ return {
 				"astro",
 				"bash",
 				"css",
+				"diff",
 				"dockerfile",
+				"git_rebase",
+				"gitcommit",
 				"gitignore",
 				"html",
 				"http",
 				"javascript",
+				"jsdoc",
 				"json",
 				"lua",
 				"markdown",
 				"markdown_inline",
 				"prisma",
+				"regex",
+				"scss",
+				"toml",
 				"tsx",
 				"typescript",
 				"vim",
@@ -31,40 +37,15 @@ return {
 
 			ts.install(languages)
 
-			ts.setup({
-				sync_install = false,
-				ignore_install = {},
-				modules = {},
-				highlight = { enable = true },
-				indent = { enable = true },
-				ensure_installed = languages,
-				auto_install = true,
-				textobjects = {
-					select = {
-						enable = true,
-						lookahead = true,
-						keymaps = {
-							["af"] = "@function.outer",
-							["if"] = "@function.inner",
-							["al"] = "@loop.outer",
-							["il"] = "@loop.inner",
-							["ac"] = "@conditional.outer",
-							["ic"] = "@conditional.inner",
-							["a/"] = "@comment.outer",
-							["i/"] = "@comment.inner",
-						},
-					},
-				},
-				additional_vim_regex_highlighting = false,
-			})
-
 			vim.api.nvim_create_autocmd("FileType", {
 				callback = function(args)
 					local filetype = args.match
 					local lang = vim.treesitter.language.get_lang(filetype)
 
 					if lang and vim.treesitter.language.add(lang) then
-						vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+						if vim.treesitter.query.get(lang, "indents") then
+							vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+						end
 						vim.treesitter.start()
 					end
 				end,

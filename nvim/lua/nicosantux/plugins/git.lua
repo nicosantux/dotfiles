@@ -2,6 +2,7 @@ return {
 	{
 		"akinsho/git-conflict.nvim",
 		version = "*",
+		event = "BufReadPre",
 		config = true,
 	},
 	{
@@ -29,20 +30,5 @@ return {
 			keymap.set("n", "<leader>gS", gitsigns.stage_buffer, { desc = "Stage buffer" })
 			keymap.set("n", "<leader>gR", gitsigns.reset_buffer, { desc = "Reset buffer" })
 		end,
-	},
-	{
-		"kdheepak/lazygit.nvim",
-		cmd = {
-			"LazyGit",
-			"LazyGitConfig",
-			"LazyGitCurrentFile",
-			"LazyGitFilter",
-			"LazyGitFilterCurrentFile",
-		},
-		dependencies = { "nvim-lua/plenary.nvim" },
-		keys = {
-			{ "<leader>lg", "<cmd>LazyGit<cr>", desc = "Open LazyGit" },
-			{ "<leader>gl", "<cmd>LazyGitLog<cr>", desc = "Open LazyGit" },
-		},
 	},
 }

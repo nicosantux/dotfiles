@@ -4,7 +4,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	pattern = "*",
 	desc = "Highlight selection",
 	callback = function()
-		vim.highlight.on_yank({ timeout = 200, visual = true })
+		vim.hl.on_yank({ timeout = 200, visual = true })
 	end,
 })
 
@@ -33,5 +33,21 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 	pattern = { ".env*" },
 	callback = function()
 		vim.bo.filetype = "dosini"
+	end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+	group = vim.api.nvim_create_augroup("spell_prose", { clear = true }),
+	pattern = { "markdown", "mdx", "gitcommit", "text" },
+	callback = function()
+		vim.opt_local.spell = true
+	end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+	group = vim.api.nvim_create_augroup("gitcommit_colorcolumn", { clear = true }),
+	pattern = "gitcommit",
+	callback = function()
+		vim.opt_local.colorcolumn = "73"
 	end,
 })
