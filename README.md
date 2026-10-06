@@ -2,7 +2,7 @@
 
 My configuration files for macOS.
 
-![Screenshot 2025-01-13 at 17 04 20](https://github.com/user-attachments/assets/11591c74-15b4-4115-af5f-38cabb9381a6)
+<img width="1920" height="1080" alt="file-d64e9ea5bc86ee33bd71e0e23590d961" src="https://github.com/user-attachments/assets/0416382e-693c-45e0-a427-8891085e8fc9" />
 
 - [Aerospace](https://github.com/nikitabobko/AeroSpace)
 - [Claude Code](https://claude.com/claude-code)
