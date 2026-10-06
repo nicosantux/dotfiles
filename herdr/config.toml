@@ -25,6 +25,7 @@ name = "catppuccin"
 # red = "#ff6188"
 # green = "#a6e3a1"
 
+auto_switch = false
 [terminal]
 # Executable used for new interactive panes.
 # Empty means $SHELL, then /bin/sh.
@@ -153,7 +154,7 @@ sidebar_collapsed_mode = "compact"
 # Capture mouse input for Herdr's mouse UI.
 # Set false to let the terminal handle normal clicks, such as Cmd-clicking URLs.
 # Pane apps like lazygit and btop can still receive mouse when they request it.
-mouse_capture = false
+mouse_capture = true
 
 # Host cursor policy: "auto", "native", or "drawn".
 # "auto" draws Herdr's own cursor on Windows to avoid ConPTY cursor flicker, and uses the native terminal cursor elsewhere.
@@ -177,7 +178,7 @@ mouse_capture = false
 
 # Ask for a tab name before creating a new tab.
 # Set false to create tabs immediately with generated names.
-# prompt_new_tab_name = true
+prompt_new_tab_name = false
 
 # Draw borders around split panes.
 # pane_borders = true
@@ -202,6 +203,8 @@ pane_gaps = false
 
 # Background notification popup delivery
 agent_panel_sort = "priority"
+show_agent_labels_on_pane_borders = true
+status_indicators = "dots"
 [ui.toast]
 # off = disable pop-up notifications
 # herdr = show in-app toasts
@@ -210,6 +213,7 @@ agent_panel_sort = "priority"
 # delivery = "off"
 # delay_seconds = 1
 
+delivery = "system"
 [ui.toast.herdr]
 # position = "bottom-right"
 
