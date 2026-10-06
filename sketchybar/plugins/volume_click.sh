@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 
 WIDTH=100
+PADDING=8 # Keeps the knob clear of its neighbors at 0% and 100%
 
 detail_on() {
-  sketchybar --animate tanh 30 --set volume slider.width=$WIDTH
+  sketchybar --animate tanh 30 --set volume slider.width=$WIDTH slider.knob.drawing=on padding_left=$PADDING padding_right=$PADDING
 }
 
 detail_off() {
-  sketchybar --animate tanh 30 --set volume slider.width=0
+  sketchybar --animate tanh 30 --set volume slider.width=0 slider.knob.drawing=off padding_left=0 padding_right=0
 }
 
 toggle_detail() {

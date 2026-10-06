@@ -4,10 +4,11 @@
 # e.g. via function in .zshrc
 
 brew=(
-  icon=􀐛
+  icon=$BREW
+  # Optical correction for glyph side bearings
+  label.padding_left=2
   label=?
   update_freq=1800
-  padding_right=8
   script="$PLUGIN_DIR/brew.sh"
 )
 

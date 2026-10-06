@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 WIDTH=100
+PADDING=8 # Keeps the knob clear of its neighbors at 0% and 100%
 
 volume_change() {
   source "$CONFIG_DIR/icons.sh"
@@ -18,12 +19,12 @@ volume_change() {
     *) ICON=$VOLUME_100
   esac
 
-  sketchybar --set volume_icon label=$ICON \
+  sketchybar --set volume_icon icon=$ICON \
              --set $NAME slider.percentage=$INFO
 
   INITIAL_WIDTH="$(sketchybar --query $NAME | jq -r ".slider.width")"
   if [ "$INITIAL_WIDTH" -eq "0" ]; then
-    sketchybar --animate tanh 30 --set $NAME slider.width=$WIDTH 
+    sketchybar --animate tanh 30 --set $NAME slider.width=$WIDTH slider.knob.drawing=on padding_left=$PADDING padding_right=$PADDING
   fi
 
   sleep 2
@@ -31,7 +32,7 @@ volume_change() {
   # Check wether the volume was changed another time while sleeping
   FINAL_PERCENTAGE="$(sketchybar --query $NAME | jq -r ".slider.percentage")"
   if [ "$FINAL_PERCENTAGE" -eq "$INFO" ]; then
-    sketchybar --animate tanh 30 --set $NAME slider.width=0
+    sketchybar --animate tanh 30 --set $NAME slider.width=0 slider.knob.drawing=off padding_left=0 padding_right=0
   fi
 }
 

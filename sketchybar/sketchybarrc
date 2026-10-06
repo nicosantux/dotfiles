@@ -2,16 +2,16 @@
 
 source "$CONFIG_DIR/colors.sh" # Loads all defined colors
 source "$CONFIG_DIR/icons.sh" # Loads all defined icons
+source "$CONFIG_DIR/styles.sh" # Loads fonts and spacing tokens
 
 ITEM_DIR="$CONFIG_DIR/items" # Directory where the items are configured
 PLUGIN_DIR="$CONFIG_DIR/plugins" # Directory where all the plugin scripts are stored
 
-FONT="SF Pro" # Needs to have Regular, Bold, Semibold, Heavy and Black variants
-PADDINGS=4 # All paddings use this value (icon, label, background)
+make -s -C "$CONFIG_DIR/helpers/wifi" >/dev/null 2>&1
 
 # Setting up the general bar appearance of the bar
 bar=(
-  blur_radius=30
+  blur_radius=0
   height=32
   color=$BAR_COLOR
   border_width=0
@@ -31,24 +31,26 @@ sketchybar --bar "${bar[@]}"
 # Setting up default values
 defaults=(
   updates=when_shown
-  icon.font="$FONT:Bold:14.0"
+  icon.font="$ICON_FONT"
   icon.color=$ICON_COLOR
-  icon.padding_left=$PADDINGS
-  icon.padding_right=$PADDINGS
-  label.font="$FONT:Semibold:14.0"
+  icon.padding_left=$GLYPH_PADDING
+  icon.padding_right=$GLYPH_PADDING
+  label.font="$LABEL_FONT"
   label.color=$LABEL_COLOR
-  label.padding_left=$PADDINGS
-  label.padding_right=$PADDINGS
-  padding_right=$PADDINGS
-  padding_left=$PADDINGS
+  $(faux_bold label "$LABEL_COLOR")
+  label.padding_left=$GLYPH_PADDING
+  label.padding_right=$GLYPH_PADDING
+  padding_right=$ITEM_PADDING
+  padding_left=$ITEM_PADDING
   background.height=26
   background.corner_radius=9
   background.border_width=2
+  popup.height=30
   popup.background.border_width=2
   popup.background.corner_radius=9
   popup.background.border_color=$POPUP_BORDER_COLOR
   popup.background.color=$POPUP_BACKGROUND_COLOR
-  popup.blur_radius=20
+  popup.blur_radius=0
   popup.background.shadow.drawing=on
   scroll_texts=on
 )
@@ -58,16 +60,21 @@ sketchybar --default "${defaults[@]}"
 # Left
 source "$ITEM_DIR/apple.sh"
 source "$ITEM_DIR/spaces.sh"
-source "$ITEM_DIR/front_app.sh"
+
+# Center: split around the notch when a display has one
+source "$ITEM_DIR/calendar.sh"
+source "$ITEM_DIR/weather.sh"
+source "$ITEM_DIR/notch.sh"
 
 # Right
-source "$ITEM_DIR/calendar.sh"
 source "$ITEM_DIR/brew.sh"
 source "$ITEM_DIR/battery.sh"
 source "$ITEM_DIR/wifi.sh"
+source "$ITEM_DIR/bluetooth.sh"
 source "$ITEM_DIR/volume.sh"
-source "$ITEM_DIR/svim.sh"
-source "$ITEM_DIR/weather.sh"
+source "$ITEM_DIR/claude.sh"
+source "$ITEM_DIR/next_event.sh"
+source "$ITEM_DIR/spotify.sh"
 
 sketchybar --hotload on
 

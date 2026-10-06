@@ -12,7 +12,7 @@ if [ -z "$PERCENTAGE" ]; then
 fi
 
 DRAWING=on
-COLOR=$WHITE
+COLOR=$ICON_COLOR
 
 if [ "$PERCENTAGE" -ge 90 ]; then
   ICON=$BATTERY_100

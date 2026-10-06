@@ -5,18 +5,16 @@ POPUP_CLICK_SCRIPT='sketchybar --set $NAME popup.drawing=toggle'
 
 apple_logo=(
   icon=$APPLE
-  icon.font="$FONT:Black:16.0"
   icon.color=$WHITE
-  padding_right=8
+  padding_right=$GROUP_GAP
   label.drawing=off
   click_script="$POPUP_CLICK_SCRIPT"
-  popup.height=35
 )
 
 apple_prefs=(
   icon=$PREFERENCES
   label="Preferences"
-  click_script="open -a 'System Preferences'; $POPUP_OFF"
+  click_script="open -a 'System Settings'; $POPUP_OFF"
 )
 
 apple_activity=(

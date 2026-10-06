@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
 weather=(
-  padding_right=8
-  icon.font="$FONT:Bold:16.0"
+  # Optical correction for glyph side bearings
+  label.padding_left=1
   script="$PLUGIN_DIR/weather.sh"
   update_freq=1200
 )
 
-sketchybar --add item weather right \
+sketchybar --add item weather center \
   --set weather "${weather[@]}"     \
   --subscribe weather mouse.clicked
 
