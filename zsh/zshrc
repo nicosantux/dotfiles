@@ -1,12 +1,23 @@
 export PATH="/opt/homebrew/bin:$PATH" 
 export EDITOR="nvim"
+export PATH="$HOME/.local/bin:$PATH"
 
-autoload -Uz compinit
-compinit
+# zsh plugin manager
+source /opt/homebrew/opt/zinit/zinit.zsh
 
-fpath=(~/.zsh $fpath)
+# super smart autocompletions
+zinit ice wait"0" lucid depth=1 pick"deja.plugin.zsh"
+zinit light Giammarco-Ferranti/deja
 
-zstyle ':completion:*:*:git:*' script ~/.git-completion.bash
+# deja overrides
+export DEJA_ACCEPT_KEY=^Y
+export DEJA_CYCLE_KEY=^N
+export DEJA_CYCLE_FUZZY_KEY=
+export DEJA_CYCLE_FUZZY_BACK_KEY=
+export DEJA_TOGGLE_EMPTY_KEY=
+
+# syntax highlighting
+zinit light zsh-users/zsh-syntax-highlighting
 
 # starship
 eval "$(starship init zsh)"
@@ -16,10 +27,15 @@ export STARSHIP_CONFIG=~/.config/starship/starship.toml
 HISTFILE=$HOME/.zhistory
 SAVEHIST=10000
 HISTSIZE=10000
-setopt share_history
+setopt append_history
 setopt hist_expire_dups_first
+setopt hist_find_no_dups
 setopt hist_ignore_dups
+setopt hist_reduce_blanks
 setopt hist_verify
+setopt inc_append_history
+setopt no_beep
+setopt share_history
 
 # completion using arrow keys (based on history)
 bindkey "^[[A" history-search-backward
@@ -28,12 +44,6 @@ bindkey "^[[B" history-search-forward
 # vi mode
 bindkey -v
 bindkey -M viins 'jk' vi-cmd-mode
-
-# zsh-autosuggestions
-source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-
-# zsh-syntax-highlighting
-source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # fnm
 eval "$(fnm env --use-on-cd)"
@@ -48,7 +58,7 @@ run_dev() {
     pnpm dev "$@"
   elif [[ -f yarn.lock ]]; then
     yarn dev "$@"
-  elif [[ -f bun.lockb ]]; then
+  elif [[ -f bun.lock ]]; then
     bun run dev "$@"
   else
     echo "❌ No package manager found."
@@ -93,6 +103,7 @@ alias px="pnpx"
 alias tm="tmux"
 alias tma="tmux attach"
 alias vim="nvim"
+alias tree="eza --tree --icons"
 
 # fzf
 # Set up fzf key bindings and fuzzy completion
