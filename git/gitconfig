@@ -1,20 +1,44 @@
 [alias]
   bb = !sh ~/dotfiles/git/better-branch.sh
+
 [core]
   editor = nvim
   pager = delta
+
+[include]
+  path = ~/dotfiles/git/catppuccin.gitconfig
+
 [delta]
+  features = catppuccin-mocha
   navigate = true
   side-by-side = true
+  line-numbers = true
+
 [diff]
+  algorithm = histogram
   colorMoved = default
+  mnemonicPrefix = true
+
 [init]
   defaultBranch = main
+
 [interactive]
   diffFilter = delta --color-only
+
 [fetch]
   prune = true
+
+[pull]
+  rebase = true
+
+[push]
+  autoSetupRemote = true
+
+[branch]
+  sort = -committerdate
+
 [merge]
   conflictstyle = diff3
+
 [rerere]
-	enabled = true
+  enabled = true
