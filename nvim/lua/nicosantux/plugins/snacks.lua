@@ -103,36 +103,6 @@ return {
 		},
 	},
 	opts = {
-		dashboard = {
-			preset = {
-				header = [[
-                 -*-           +-                 
-                -***==         +**-               
-             -+****===:        +****-             
-            =+++***====-       +*****=            
-            =++++**=====-.     +*****=            
-            =++++++=======:    +*****=            
-            =++++++.-======-   +*****=            
-            =++++++..-======-. +*****=            
-            =++++++.  :=======:+*****=            
-            =++++++.   .-======+*****=            
-            =++++++.    .-======+****=            
-            =++++++.      :=====++***=            
-             :+++++.       .-===++++=.            
-               :+++.        .-==++=.              
-                 :+.          :==.                ]],
-				keys = {
-					{ key = "e", icon = "\u{e5fe}", desc = "Toggle file explorer", action = "<cmd>NvimTreeToggle<CR>" },
-					{ key = "f", icon = "\u{f0c7c}", desc = "Find File", action = function() Snacks.picker.files({ hidden = true }) end },
-					{ key = "s", icon = "\u{f422}", desc = "Find Word", action = function() Snacks.picker.grep() end },
-					{ key = "q", icon = "\u{f057}", desc = "Quit NVIM", action = "<cmd>qa<CR>" },
-				},
-			},
-			sections = {
-				{ section = "header" },
-				{ section = "keys", gap = 1, padding = 1 },
-			},
-		},
 		indent = { animate = { enabled = false } },
 		input = {},
 		lazygit = {},
@@ -141,6 +111,46 @@ return {
 				preset = function()
 					return vim.o.columns >= 120 and "telescope" or "vertical"
 				end,
+			},
+			layouts = {
+				telescope = {
+					reverse = true,
+					layout = {
+						box = "horizontal",
+						backdrop = false,
+						width = 0.95,
+						height = 0.95,
+						border = "none",
+						{
+							box = "vertical",
+							{ win = "list", title = " Results ", title_pos = "center", border = true },
+							{ win = "input", height = 1, border = true, title = "{title} {live} {flags}", title_pos = "center" },
+						},
+						{
+							win = "preview",
+							title = "{preview:Preview}",
+							width = 0.6,
+							border = true,
+							title_pos = "center",
+						},
+					},
+				},
+				vertical = {
+					layout = {
+						backdrop = false,
+						width = 0.9,
+						min_width = 80,
+						height = 0.95,
+						min_height = 30,
+						box = "vertical",
+						border = true,
+						title = "{title} {live} {flags}",
+						title_pos = "center",
+						{ win = "input", height = 1, border = "bottom" },
+						{ win = "list", border = "none" },
+						{ win = "preview", title = "{preview}", height = 0.55, border = "top" },
+					},
+				},
 			},
 		},
 		terminal = {},
