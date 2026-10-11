@@ -28,12 +28,16 @@ return {
 			-- servers for mason to install
 			ensure_installed = {
 				"astro",
+				"bashls",
 				"cssls",
+				"dockerls",
 				"emmet_ls",
 				"eslint",
 				"html",
 				"lua_ls",
+				"prismals",
 				"tailwindcss",
+				"taplo",
 				"vtsls",
 				"jsonls",
 				"yamlls",
@@ -42,11 +46,11 @@ return {
 
 		mason_tool_installer.setup({
 			ensure_installed = {
-				"eslint",
 				"eslint_d",
 				"markdown-toc",
-				"prettier",
 				"prettierd",
+				"shellcheck",
+				"shfmt",
 				"stylua",
 			},
 		})

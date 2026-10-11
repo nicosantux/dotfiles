@@ -79,13 +79,17 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 vim.lsp.enable({
 	"astro",
+	"bashls",
 	"cssls",
+	"dockerls",
 	"emmet_ls",
 	"eslint",
 	"html",
 	"jsonls",
 	"lua_ls",
+	"prismals",
 	"tailwindcss",
+	"taplo",
 	"vtsls",
 	"yamlls",
 })

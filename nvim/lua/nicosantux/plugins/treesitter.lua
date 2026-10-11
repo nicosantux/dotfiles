@@ -36,6 +36,7 @@ return {
 			}
 
 			ts.install(languages)
+			vim.treesitter.language.register("bash", "zsh")
 
 			vim.api.nvim_create_autocmd("FileType", {
 				callback = function(args)

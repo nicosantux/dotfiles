@@ -38,6 +38,7 @@ return {
 			},
 			formatters_by_ft = {
 				astro = { "eslint_d", "prettierd" },
+				bash = { "shfmt" },
 				css = { "prettierd" },
 				html = { "prettierd" },
 				javascript = { "eslint_d", "prettierd" },
@@ -46,6 +47,8 @@ return {
 				lua = { "stylua" },
 				markdown = { "prettierd", "markdown-toc" },
 				mdx = { "prettierd", "markdown-toc" },
+				sh = { "shfmt" },
+				toml = { "taplo" },
 				typescript = { "eslint_d", "prettierd" },
 				typescriptreact = { "eslint_d", "prettierd" },
 				yaml = { "prettierd" },
