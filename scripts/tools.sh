@@ -25,7 +25,7 @@ fnm install --lts
 echo "Installing agent skills..."
 eval "$(fnm env)"
 fnm use lts-latest
-jq -r '.skills | to_entries[] | "\(.value.source) \(.key)"' ~/dotfiles/claude/skill-lock.json |
+jq -r '.skills | to_entries[] | "\(.value.source) \(.key)"' ~/dotfiles/agents/skill-lock.json |
   while read -r source skill; do
     npx -y skills add "$source" --global --agent claude-code --skill "$skill" --yes </dev/null
   done
