@@ -95,9 +95,10 @@ alias gst="git status -u"
 alias gsw="git switch"
 alias gswl='git switch $(git branch | fzf | sed "s/* //")'
 alias gswr='git switch $(git branch -r | fzf | sed "s/ *origin\///")'
+alias hs="herdr-sessionizer"
 alias lg="lazygit"
 alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"
-alias oc="opencode --port"
+alias oc="opencode"
 alias pn="pnpm"
 alias px="pnpx"
 alias tm="tmux"
