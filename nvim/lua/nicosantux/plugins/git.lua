@@ -20,13 +20,17 @@ return {
 
 			local keymap = vim.keymap
 
-			keymap.set("n", "]h", gitsigns.next_hunk, { desc = "Next hunk" })
-			keymap.set("n", "[h", gitsigns.prev_hunk, { desc = "Previous hunk" })
+			keymap.set("n", "]h", function()
+				gitsigns.nav_hunk("next")
+			end, { desc = "Next hunk" })
+			keymap.set("n", "[h", function()
+				gitsigns.nav_hunk("prev")
+			end, { desc = "Previous hunk" })
 			keymap.set("n", "<leader>gp", gitsigns.preview_hunk, { desc = "Preview hunk" })
 			keymap.set("n", "<leader>gd", gitsigns.diffthis, { desc = "Show file diff" })
 			keymap.set("n", "<leader>gs", gitsigns.stage_hunk, { desc = "Stage hunk" })
 			keymap.set("n", "<leader>gr", gitsigns.reset_hunk, { desc = "Reset hunk" })
-			keymap.set("n", "<leader>gu", gitsigns.undo_stage_hunk, { desc = "Undo hunk" })
+			keymap.set("n", "<leader>gu", gitsigns.stage_hunk, { desc = "Unstage hunk" })
 			keymap.set("n", "<leader>gS", gitsigns.stage_buffer, { desc = "Stage buffer" })
 			keymap.set("n", "<leader>gR", gitsigns.reset_buffer, { desc = "Reset buffer" })
 		end,
