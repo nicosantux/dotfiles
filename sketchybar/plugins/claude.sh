@@ -3,7 +3,7 @@
 source "$CONFIG_DIR/colors.sh"
 source "$CONFIG_DIR/styles.sh"
 
-# Shared with claude/statusline.sh so both stay in sync and hit the endpoint less often.
+# Shared with agents/claude/statusline.sh so both stay in sync and hit the endpoint less often.
 CACHE_FILE="/tmp/claude/statusline-usage-cache.json"
 CACHE_MAX_AGE=60
 
@@ -36,7 +36,7 @@ color_for_pct() {
   fi
 }
 
-# Turns an ISO 8601 UTC timestamp into "resets in 2h 14m (19:39)".
+# Turns an ISO 8601 UTC timestamp into "  ·  resets in 2h 14m (19:39)".
 format_reset() {
   local iso="$1" format="$2" epoch remaining days hours minutes relative
   [[ -z "$iso" ]] && return
@@ -57,7 +57,7 @@ format_reset() {
     relative="${minutes}m"
   fi
 
-  echo "resets in $relative ($(date -r "$epoch" +"$format"))"
+  echo "  ·  resets in $relative ($(date -r "$epoch" +"$format"))"
 }
 
 case "$SENDER" in
@@ -80,8 +80,12 @@ if (( CACHE_AGE >= CACHE_MAX_AGE )); then
   fetch_usage
 fi
 
+# The cache can outlive the 5h window when the OAuth token expires and the
+# fetch fails, so an already reset window is reported as 0%.
 read -r FIVE_HOUR FIVE_HOUR_RESET SEVEN_DAY SEVEN_DAY_RESET < <(jq -r '[
-  (.five_hour.utilization // empty | round), (.five_hour.resets_at // "-"),
+  (.five_hour | if .resets_at and (.resets_at[0:19] + "Z" | fromdateiso8601) > now
+    then (.utilization // empty | round), .resets_at
+    else 0, "-" end),
   (.seven_day.utilization // empty | round), (.seven_day.resets_at // "-")
 ] | join(" ")' "$CACHE_FILE" 2>/dev/null)
 
@@ -96,7 +100,7 @@ SEVEN_DAY_COLOR="$(color_for_pct "$SEVEN_DAY")"
 sketchybar --set $NAME label="${FIVE_HOUR}%" \
   --set claude.five_hour \
   icon.color="$FIVE_HOUR_COLOR" icon.shadow.color="$(faux_bold_color "$FIVE_HOUR_COLOR")" \
-  label="${FIVE_HOUR}%  ·  $(format_reset "${FIVE_HOUR_RESET#-}" "%H:%M")" \
+  label="${FIVE_HOUR}%$(format_reset "${FIVE_HOUR_RESET#-}" "%H:%M")" \
   --set claude.seven_day \
   icon.color="$SEVEN_DAY_COLOR" icon.shadow.color="$(faux_bold_color "$SEVEN_DAY_COLOR")" \
-  label="${SEVEN_DAY}%  ·  $(format_reset "${SEVEN_DAY_RESET#-}" "%a %H:%M")"
+  label="${SEVEN_DAY}%$(format_reset "${SEVEN_DAY_RESET#-}" "%a %H:%M")"
