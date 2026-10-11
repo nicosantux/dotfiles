@@ -23,6 +23,7 @@ done
 # Define an array of packages to install using Homebrew.
 packages=(
   "Giammarco-Ferranti/deja/deja"
+  "bash"
   "bat"
   "blueutil"
   "carapace"
@@ -42,6 +43,7 @@ packages=(
   "herdr"
   "ical-buddy"
   "jq"
+  "lazydocker"
   "lazygit"
   "mas"
   "neovim"
@@ -99,6 +101,7 @@ apps=(
   "sf-symbols"
   "slack"
   "spotify"
+  "wezterm"
 )
 
 # Loop over the array to install each application.
