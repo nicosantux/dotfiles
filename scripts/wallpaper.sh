@@ -3,4 +3,3 @@
 # Set wallpaper
 echo "Changing wallpaper..."
 osascript -e "tell application \"System Events\" to set picture of every desktop to \"$HOME/dotfiles/wallpapers/wallpaper-01.jpg\""
-

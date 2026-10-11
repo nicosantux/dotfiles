@@ -64,11 +64,10 @@ defaults write NSGlobalDomain InitialKeyRepeat -int 10
 defaults write NSGlobalDomain AppleLanguages -array "en-AR" "es-AR"
 
 # Set the timezone; see `sudo systemsetup -listtimezones` for other values
-sudo systemsetup -settimezone "America/Argentina/Buenos_Aires" > /dev/null
+sudo systemsetup -settimezone "America/Argentina/Buenos_Aires" >/dev/null
 
 # Stop Apple Music from responding to the keyboard media keys
-launchctl unload -w /System/Library/LaunchAgents/com.apple.rcd.plist 2> /dev/null
-
+launchctl unload -w /System/Library/LaunchAgents/com.apple.rcd.plist 2>/dev/null
 
 ###############################################################################
 # Finder                                                                      #
@@ -112,7 +111,6 @@ defaults write com.apple.dock autohide -bool true
 # Do not display recent apps in the Dock.
 defaults write com.apple.dock show-recents -bool false
 
-
 # Hot corners
 # Possible values:
 #  0: no-op
@@ -135,11 +133,9 @@ defaults write com.apple.dock wvous-bl-modifier -int 0
 defaults write com.apple.dock wvous-br-corner -int 0
 defaults write com.apple.dock wvous-br-modifier -int 0
 
-
 ###############################################################################
 # Time Machine                                                                #
 ###############################################################################
 
 # Prevent Time Machine from prompting to use new hard drives as backup volume
 defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
-
