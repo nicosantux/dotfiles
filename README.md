@@ -11,6 +11,7 @@ My configuration files for macOS.
 - [Herdr](https://herdr.dev)
 - [JankyBorders](https://github.com/FelixKratz/JankyBorders)
 - [Karabiner Elements](https://karabiner-elements.pqrs.org)
+- [Mise](https://mise.jdx.dev)
 - [Neovim](https://neovim.io)
 - [Opencode](https://opencode.ai/)
 - [Raycast](https://www.raycast.com)
@@ -46,7 +47,7 @@ The script runs every step in [`scripts/`](scripts):
 | `fonts.sh`     | Installs Dank Mono Nerd Font.                                                |
 | `macos.sh`     | Applies macOS system defaults.                                               |
 | `services.sh`  | Starts `borders` and `sketchybar`, and authorizes the SketchyBar Wi-Fi helper. |
-| `tools.sh`     | Installs tmux plugins, bat theme, rtk, herdr plugins, Node LTS and agent skills. |
+| `tools.sh`     | Installs tmux plugins, bat theme, rtk, herdr plugins, mise tools and agent skills. |
 | `git.sh`       | Copies the git config to `~/.gitconfig` and asks for your name and email.    |
 | `wallpaper.sh` | Sets the wallpaper.                                                          |
 

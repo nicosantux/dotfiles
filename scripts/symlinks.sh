@@ -13,6 +13,7 @@ rm -rf ~/.agents/.skill-lock.json \
   ~/.config/ghostty \
   ~/.config/herdr/config.toml \
   ~/.config/karabiner/karabiner.json \
+  ~/.config/mise/config.toml \
   ~/.config/nvim \
   ~/.config/opencode/AGENTS.md \
   ~/.config/opencode/command \
@@ -35,6 +36,7 @@ mkdir -p ~/.agents \
   ~/.config/ghostty \
   ~/.config/herdr \
   ~/.config/karabiner \
+  ~/.config/mise \
   ~/.config/nvim \
   ~/.config/opencode \
   ~/.config/sketchybar \
@@ -58,6 +60,7 @@ ln -s ~/dotfiles/ghostty/config ~/.config/ghostty/config
 ln -s ~/dotfiles/herdr/config.toml ~/.config/herdr/config.toml
 ln -s ~/dotfiles/herdr/sessionizer.sh ~/.local/bin/herdr-sessionizer
 ln -s ~/dotfiles/karabiner/karabiner.json ~/.config/karabiner/karabiner.json
+ln -s ~/dotfiles/mise/config.toml ~/.config/mise/config.toml
 ln -s ~/dotfiles/nvim/* ~/.config/nvim/
 ln -s ~/dotfiles/sketchybar/* ~/.config/sketchybar/
 ln -s ~/dotfiles/starship/starship.toml ~/.config/starship/starship.toml

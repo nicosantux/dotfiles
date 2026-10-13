@@ -17,14 +17,13 @@ rtk init --global --opencode --auto-patch
 echo "Installing herdr plugins..."
 herdr plugin install paulbkim-dev/vim-herdr-navigation --yes
 
-# Install node lts.
-echo "Installing Node LTS..."
-fnm install --lts
+# Install mise tools.
+echo "Installing mise tools..."
+mise install
 
 # Restore global agent skills from the versioned lock file.
 echo "Installing agent skills..."
-eval "$(fnm env)"
-fnm use lts-latest
+eval "$(mise activate bash --shims)"
 jq -r '.skills | to_entries[] | "\(.value.source) \(.key)"' ~/dotfiles/agents/skill-lock.json |
   while read -r source skill; do
     npx -y skills add "$source" --global --agent claude-code --skill "$skill" --yes </dev/null

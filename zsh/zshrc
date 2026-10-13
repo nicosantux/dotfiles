@@ -45,8 +45,8 @@ bindkey "^[[B" history-search-forward
 bindkey -v
 bindkey -M viins 'jk' vi-cmd-mode
 
-# fnm
-eval "$(fnm env --use-on-cd)"
+# mise
+eval "$(mise activate zsh)"
 
 # aliases
 

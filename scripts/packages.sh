@@ -7,7 +7,6 @@ tap=(
   "gentleman-programming/tap"
   "my-monkeys/tap"
   "nikitabobko/tap"
-  "oven-sh/bun"
   "rtk-ai/tap"
 )
 
@@ -34,7 +33,6 @@ packages=(
   "fd"
   "felixkratz/formulae/borders"
   "felixkratz/formulae/sketchybar"
-  "fnm"
   "fzf"
   "gentleman-programming/tap/engram"
   "gh"
@@ -46,9 +44,9 @@ packages=(
   "lazydocker"
   "lazygit"
   "mas"
+  "mise"
   "neovim"
   "opencode"
-  "oven-sh/bun/bun"
   "pstree"
   "ripgrep"
   "rtk-ai/tap/rtk"
