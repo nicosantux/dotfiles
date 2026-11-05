@@ -81,6 +81,7 @@ chsh -s "$(brew --prefix)/bin/zsh"
 # Define an array of applications to install using Homebrew Cask.
 apps=(
   "affinity"
+  "android-studio"
   "arc"
   "claude"
   "claude-code"
@@ -117,8 +118,14 @@ echo "Installing Mac App Store apps..."
 mas_apps=(
   "747648890" # Telegram
   "310633997" # WhatsApp Messenger
+  "497799835" # Xcode
 )
 
 for app in "${mas_apps[@]}"; do
   mas install "$app"
 done
+
+echo "Configuring Xcode..."
+sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer
+sudo xcodebuild -license accept
+xcodebuild -runFirstLaunch

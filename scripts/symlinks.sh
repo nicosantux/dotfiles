@@ -23,6 +23,7 @@ rm -rf ~/.agents/.skill-lock.json \
   ~/.config/tmux \
   ~/.config/yazi \
   ~/.local/bin/herdr-sessionizer \
+  ~/.ideavimrc \
   ~/.zshrc \
   2>/dev/null
 
@@ -59,6 +60,7 @@ ln -s ~/dotfiles/borders/bordersrc ~/.config/borders/bordersrc
 ln -s ~/dotfiles/ghostty/config ~/.config/ghostty/config
 ln -s ~/dotfiles/herdr/config.toml ~/.config/herdr/config.toml
 ln -s ~/dotfiles/herdr/sessionizer.sh ~/.local/bin/herdr-sessionizer
+ln -s ~/dotfiles/ideavim/ideavimrc ~/.ideavimrc
 ln -s ~/dotfiles/karabiner/karabiner.json ~/.config/karabiner/karabiner.json
 ln -s ~/dotfiles/mise/config.toml ~/.config/mise/config.toml
 ln -s ~/dotfiles/nvim/* ~/.config/nvim/

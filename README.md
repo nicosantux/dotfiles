@@ -9,6 +9,7 @@ My configuration files for macOS.
 - [Ghostty](https://ghostty.org/)
 - [Git](https://git-scm.com) + [Delta](https://github.com/dandavison/delta)
 - [Herdr](https://herdr.dev)
+- [IdeaVim](https://github.com/JetBrains/ideavim)
 - [JankyBorders](https://github.com/FelixKratz/JankyBorders)
 - [Karabiner Elements](https://karabiner-elements.pqrs.org)
 - [Mise](https://mise.jdx.dev)
@@ -42,7 +43,7 @@ The script runs every step in [`scripts/`](scripts):
 | Script         | What it does                                                                 |
 | -------------- | ---------------------------------------------------------------------------- |
 | `homebrew.sh`  | Installs Homebrew and disables analytics.                                    |
-| `symlinks.sh`  | Symlinks the configs into `~/.config`, `~/.claude` and `~/.zshrc`.           |
+| `symlinks.sh`  | Symlinks the configs into `~/.config`, `~/.claude`, `~/.zshrc` and `~/.ideavimrc`. |
 | `packages.sh`  | Installs formulae, casks and Mac App Store apps, and sets Homebrew zsh as the default shell. |
 | `fonts.sh`     | Installs Dank Mono Nerd Font.                                                |
 | `macos.sh`     | Applies macOS system defaults.                                               |

@@ -1,0 +1,87 @@
+let mapleader = " "
+
+" options
+set number
+set relativenumber
+set ignorecase
+set smartcase
+set incsearch
+set nohlsearch
+set scrolloff=8
+set clipboard+=unnamedplus
+set ideajoin
+
+" plugins
+set commentary
+set highlightedyank
+set surround
+
+" Quit insert mode
+inoremap jk <Esc>
+
+" Go to the start and end of the line
+nnoremap H ^
+nnoremap L $
+
+" Move up or down the selection
+vmap J <Action>(MoveLineDown)
+vmap K <Action>(MoveLineUp)
+
+" Navigating within the file with centered view
+nnoremap <C-d> <C-d>zz
+nnoremap <C-u> <C-u>zz
+nnoremap n nzzzv
+nnoremap N Nzzzv
+
+" Select all
+nnoremap <leader>A ggVG
+
+" Tabs
+nmap <C-w> <Action>(CloseContent)
+nmap <Tab> <Action>(NextTab)
+nmap <S-Tab> <Action>(PreviousTab)
+
+" Editor split view
+nmap <leader>sv <Action>(SplitVertically)
+nmap <leader>sh <Action>(SplitHorizontally)
+nmap <leader>sw <Action>(Unsplit)
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+" Find
+nmap <leader>ff <Action>(GotoFile)
+nmap <leader>fb <Action>(RecentFiles)
+nmap <leader>fs <Action>(FindInPath)
+nmap <leader>fgc <Action>(Vcs.Show.Log)
+nmap <leader>fgb <Action>(Git.Branches)
+nmap <leader>fgs <Action>(ActivateCommitToolWindow)
+nmap <leader>tt <Action>(ActivateTODOToolWindow)
+
+" File explorer
+nmap <leader>ee <Action>(ActivateProjectToolWindow)
+nmap <leader>ef <Action>(SelectInProjectView)
+
+" LSP
+nmap gd <Action>(GotoDeclaration)
+nmap gD <Action>(GotoDeclaration)
+nmap gr <Action>(ShowUsages)
+nmap gi <Action>(GotoImplementation)
+nmap gt <Action>(GotoTypeDeclaration)
+nmap K <Action>(QuickJavaDoc)
+nmap [d <Action>(GotoPreviousError)
+nmap ]d <Action>(GotoNextError)
+nmap <leader>ca <Action>(ShowIntentionActions)
+vmap <leader>ca <Action>(ShowIntentionActions)
+nmap <leader>rn <Action>(RenameElement)
+nmap <leader>k <Action>(ShowErrorDescription)
+nmap <leader>K <Action>(ActivateProblemsViewToolWindow)
+nmap <leader>oi <Action>(OptimizeImports)
+nmap <leader>mp <Action>(ReformatCode)
+
+" Git
+nmap ]h <Action>(VcsShowNextChangeMarker)
+nmap [h <Action>(VcsShowPrevChangeMarker)
+nmap <leader>gp <Action>(VcsShowCurrentChangeMarker)
+nmap <leader>gr <Action>(Vcs.RollbackChangedLines)

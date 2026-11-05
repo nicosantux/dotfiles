@@ -77,6 +77,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	end,
 })
 
+vim.lsp.config("sourcekit", {
+	filetypes = { "swift" },
+})
+
 vim.lsp.enable({
 	"astro",
 	"bashls",
@@ -86,8 +90,10 @@ vim.lsp.enable({
 	"eslint",
 	"html",
 	"jsonls",
+	"kotlin_lsp",
 	"lua_ls",
 	"prismals",
+	"sourcekit",
 	"tailwindcss",
 	"taplo",
 	"vtsls",

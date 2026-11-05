@@ -3,6 +3,10 @@ bun = "latest"
 node = "lts"
 pnpm = "latest"
 
+[env]
+ANDROID_HOME = "{{env.HOME}}/Library/Android/sdk"
+_.path = ["{{env.ANDROID_HOME}}/platform-tools", "{{env.ANDROID_HOME}}/emulator"]
+
 [settings]
 idiomatic_version_file_enable_tools = ["node"]
 minimum_release_age = "1d"

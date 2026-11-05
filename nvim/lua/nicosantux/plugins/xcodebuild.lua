@@ -1,0 +1,25 @@
+return {
+	"wojciech-kulik/xcodebuild.nvim",
+	ft = "swift",
+	cmd = { "XcodebuildSetup", "XcodebuildPicker" },
+	dependencies = {
+		"folke/snacks.nvim",
+		"MunifTanjim/nui.nvim",
+	},
+	keys = {
+		{ "<leader>X", "<cmd>XcodebuildPicker<cr>", desc = "Show Xcodebuild actions" },
+		{ "<leader>xf", "<cmd>XcodebuildProjectManager<cr>", desc = "Show project manager actions" },
+		{ "<leader>xb", "<cmd>XcodebuildBuild<cr>", desc = "Build project" },
+		{ "<leader>xr", "<cmd>XcodebuildBuildRun<cr>", desc = "Build and run project" },
+		{ "<leader>xt", "<cmd>XcodebuildTest<cr>", desc = "Run tests" },
+		{ "<leader>xt", "<cmd>XcodebuildTestSelected<cr>", mode = "v", desc = "Run selected tests" },
+		{ "<leader>xT", "<cmd>XcodebuildTestClass<cr>", desc = "Run current test class" },
+		{ "<leader>x.", "<cmd>XcodebuildTestRepeat<cr>", desc = "Repeat last test run" },
+		{ "<leader>xe", "<cmd>XcodebuildTestExplorerToggle<cr>", desc = "Toggle test explorer" },
+		{ "<leader>xl", "<cmd>XcodebuildToggleLogs<cr>", desc = "Toggle Xcodebuild logs" },
+		{ "<leader>xd", "<cmd>XcodebuildSelectDevice<cr>", desc = "Select device" },
+		{ "<leader>xx", "<cmd>XcodebuildQuickfixLine<cr>", desc = "Quickfix line" },
+		{ "<leader>xa", "<cmd>XcodebuildCodeActions<cr>", desc = "Show Xcodebuild code actions" },
+	},
+	opts = {},
+}

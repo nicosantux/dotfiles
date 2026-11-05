@@ -34,6 +34,7 @@ return {
 				"emmet_ls",
 				"eslint",
 				"html",
+				"kotlin_lsp",
 				"lua_ls",
 				"prismals",
 				"tailwindcss",
@@ -47,11 +48,14 @@ return {
 		mason_tool_installer.setup({
 			ensure_installed = {
 				"eslint_d",
+				"ktlint",
 				"markdown-toc",
 				"prettierd",
 				"shellcheck",
 				"shfmt",
 				"stylua",
+				"xcbeautify",
+				"xcode-build-server",
 			},
 		})
 	end,
