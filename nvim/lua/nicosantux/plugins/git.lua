@@ -27,7 +27,6 @@ return {
 				gitsigns.nav_hunk("prev")
 			end, { desc = "Previous hunk" })
 			keymap.set("n", "<leader>gp", gitsigns.preview_hunk, { desc = "Preview hunk" })
-			keymap.set("n", "<leader>gd", gitsigns.diffthis, { desc = "Show file diff" })
 			keymap.set("n", "<leader>gs", gitsigns.stage_hunk, { desc = "Stage hunk" })
 			keymap.set("n", "<leader>gr", gitsigns.reset_hunk, { desc = "Reset hunk" })
 			keymap.set("n", "<leader>gu", gitsigns.stage_hunk, { desc = "Unstage hunk" })

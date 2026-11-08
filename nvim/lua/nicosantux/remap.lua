@@ -43,3 +43,47 @@ keymap.set("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" })
 keymap.set("n", "<leader>sp", "<cmd>vertical resize +10<CR>", { desc = "Increase vertical split" })
 keymap.set("n", "<leader>sm", "<cmd>vertical resize -10<CR>", { desc = "Decrease vertical split" })
 keymap.set("n", "<leader>sw", "<cmd>close<CR>", { desc = "Close current split" })
+
+-- Yank file path with line number
+local function yank_path(modifier)
+	local path = vim.fn.expand(modifier) .. "#L" .. vim.fn.line(".")
+	vim.fn.setreg("+", path)
+	vim.notify("Yanked: " .. path)
+end
+
+keymap.set("n", "<leader>yf", function()
+	yank_path("%:.")
+end, { desc = "Yank relative path with line number" })
+
+keymap.set("n", "<leader>yp", function()
+	yank_path("%:p")
+end, { desc = "Yank absolute path with line number" })
+
+-- Copy selection as a Markdown codeblock with filename and line number
+local codeblock_langs = {
+	typescriptreact = "tsx",
+	javascriptreact = "jsx",
+	typescript = "ts",
+	javascript = "js",
+}
+
+keymap.set("x", "<leader>cc", function()
+	local path = vim.fn.expand("%:.")
+	if path == "" then
+		vim.notify("Buffer has no file name", vim.log.levels.WARN)
+		return
+	end
+
+	local first, last = vim.fn.line("v"), vim.fn.line(".")
+	if first > last then
+		first, last = last, first
+	end
+
+	local lang = codeblock_langs[vim.bo.filetype] or vim.bo.filetype
+	local lines = vim.api.nvim_buf_get_lines(0, first - 1, last, false)
+	local block = ('```%s filename="%s" line=%d\n%s\n```'):format(lang, path, first, table.concat(lines, "\n"))
+
+	vim.fn.setreg("+", block)
+	vim.api.nvim_feedkeys(vim.keycode("<Esc>"), "n", false)
+	vim.notify("Copied " .. #lines .. " lines as codeblock")
+end, { desc = "Copy selection as codeblock" })
