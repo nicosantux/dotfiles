@@ -6,6 +6,7 @@ tap=(
   "felixkratz/formulae"
   "gentleman-programming/tap"
   "my-monkeys/tap"
+  "nicosantux/tap"
   "nikitabobko/tap"
   "rtk-ai/tap"
 )
@@ -17,6 +18,8 @@ for tap in "${tap[@]}"; do
     echo "Tapping $tap..."
     brew tap "$tap"
   fi
+
+  brew trust --tap "$tap"
 done
 
 # Define an array of packages to install using Homebrew.
@@ -46,6 +49,7 @@ packages=(
   "mas"
   "mise"
   "neovim"
+  "nicosantux/tap/qcs"
   "opencode"
   "pstree"
   "ripgrep"
