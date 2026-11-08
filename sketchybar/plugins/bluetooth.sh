@@ -6,6 +6,7 @@ source "$CONFIG_DIR/styles.sh"
 
 ITEM=bluetooth
 SCRIPT="$CONFIG_DIR/plugins/bluetooth.sh"
+BLUETOOTH_HELPER="$CONFIG_DIR/helpers/bluetooth/bluetooth-helper.sh"
 SCAN_FILE="/tmp/sketchybar_bluetooth_scan.tsv"
 SCAN_PID_FILE="/tmp/sketchybar_bluetooth_scan.pid"
 SCAN_SECONDS=8
@@ -22,7 +23,7 @@ header=(
 )
 
 is_powered() {
-  [[ "$(blueutil --power)" == 1 ]]
+  [[ "$("$BLUETOOTH_HELPER" --power)" == 1 ]]
 }
 
 is_scanning() {
@@ -39,7 +40,7 @@ update_icon() {
   if is_powered; then
     color=$ICON_COLOR
     icon=$BLUETOOTH_ON
-    [[ -n "$(blueutil --connected)" ]] && icon=$BLUETOOTH_CONNECTED
+    [[ -n "$("$BLUETOOTH_HELPER" --connected)" ]] && icon=$BLUETOOTH_CONNECTED
   fi
 
   sketchybar --set $ITEM icon="$icon" icon.color="$color"
@@ -75,7 +76,7 @@ render() {
       add_row "${row[@]}" icon="$BLUETOOTH_ON" icon.color="$GREY" label="$name" label.color="$GREY" \
         click_script="$SCRIPT toggle $address"
     fi
-  done < <(blueutil --paired --format json | jq -r '.[] | [.address, .connected, .name // .address] | @tsv')
+  done < <("$BLUETOOTH_HELPER" --paired --format json | jq -r '.[] | [.address, .connected, .name // .address] | @tsv')
 
   if [[ -n "$scanning" ]] || is_scanning; then
     status="Scanning…"
@@ -96,7 +97,7 @@ render() {
 }
 
 scan() {
-  blueutil --inquiry "$SCAN_SECONDS" --format json \
+  "$BLUETOOTH_HELPER" --inquiry "$SCAN_SECONDS" --format json \
     | jq -r '.[] | select(.paired | not) | [.address, .name // .address] | @tsv' > "$SCAN_FILE.tmp" \
     && mv "$SCAN_FILE.tmp" "$SCAN_FILE"
 
@@ -125,10 +126,10 @@ mark_failed() {
 toggle_device() {
   local address="$1" action=--connect
 
-  [[ "$(blueutil --is-connected "$address")" == 1 ]] && action=--disconnect
+  [[ "$("$BLUETOOTH_HELPER" --is-connected "$address")" == 1 ]] && action=--disconnect
 
   mark_busy
-  blueutil "$action" "$address" || mark_failed
+  "$BLUETOOTH_HELPER" "$action" "$address" || mark_failed
   render
   update_icon
 }
@@ -137,7 +138,7 @@ pair_device() {
   local address="$1"
 
   mark_busy
-  if blueutil --pair "$address" && blueutil --connect "$address"; then
+  if "$BLUETOOTH_HELPER" --pair "$address" && "$BLUETOOTH_HELPER" --connect "$address"; then
     grep -v "^$address"$'\t' "$SCAN_FILE" > "$SCAN_FILE.tmp"
     mv "$SCAN_FILE.tmp" "$SCAN_FILE"
   else
@@ -148,7 +149,7 @@ pair_device() {
 }
 
 toggle_power() {
-  blueutil --power toggle
+  "$BLUETOOTH_HELPER" --power toggle
   update_icon
   if is_powered; then
     start_scan

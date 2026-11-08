@@ -8,6 +8,7 @@ ITEM_DIR="$CONFIG_DIR/items" # Directory where the items are configured
 PLUGIN_DIR="$CONFIG_DIR/plugins" # Directory where all the plugin scripts are stored
 
 make -s -C "$CONFIG_DIR/helpers/wifi" >/dev/null 2>&1
+make -s -C "$CONFIG_DIR/helpers/bluetooth" >/dev/null 2>&1
 
 # Setting up the general bar appearance of the bar
 bar=(

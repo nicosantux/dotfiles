@@ -15,3 +15,7 @@ done
 # Location access is required to read Wi-Fi SSIDs; this opens the macOS permission prompt.
 echo "Authorizing sketchybar Wi-Fi helper..."
 make -C ~/.config/sketchybar/helpers/wifi authorize
+
+# Bluetooth access is granted per app; this opens the macOS permission prompt.
+echo "Authorizing sketchybar Bluetooth helper..."
+make -C ~/.config/sketchybar/helpers/bluetooth authorize
