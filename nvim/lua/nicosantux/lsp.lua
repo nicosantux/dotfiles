@@ -77,6 +77,31 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	end,
 })
 
+vim.lsp.config("oxlint", {
+	root_dir = function(bufnr, on_dir)
+		local root = vim.fs.root(bufnr, { ".oxlintrc.json", ".oxlintrc.jsonc", "oxlint.config.ts", "oxlint.config.mts" })
+		if root then
+			on_dir(root)
+		end
+	end,
+})
+
+vim.lsp.config("vtsls", {
+	settings = {
+		vtsls = {
+			tsserver = {
+				globalPlugins = {
+					{
+						name = "@astrojs/ts-plugin",
+						location = vim.fn.stdpath("data") .. "/mason/packages/astro-language-server/node_modules/@astrojs/ts-plugin",
+						enableForWorkspaceTypeScriptVersions = true,
+					},
+				},
+			},
+		},
+	},
+})
+
 vim.lsp.enable({
 	"astro",
 	"bashls",
@@ -87,6 +112,7 @@ vim.lsp.enable({
 	"html",
 	"jsonls",
 	"lua_ls",
+	"oxlint",
 	"prismals",
 	"tailwindcss",
 	"taplo",
@@ -103,16 +129,15 @@ vim.diagnostic.config({
 			[vim.diagnostic.severity.INFO] = " ",
 		},
 	},
-	virtual_text = true,
-	virtual_lines = false,
+	virtual_text = {
+		format = function(diagnostic)
+			if not diagnostic.source then
+				return diagnostic.message
+			end
+			local code = diagnostic.code and (": " .. diagnostic.code) or ""
+			return ("%s (%s%s)"):format(diagnostic.message, diagnostic.source, code)
+		end,
+	},
 	underline = true,
 	update_in_insert = false,
 })
-
-vim.keymap.set("n", "<leader>dv", function()
-	local virtual_lines = not vim.diagnostic.config().virtual_lines
-	vim.diagnostic.config({
-		virtual_lines = virtual_lines and { current_line = true } or false,
-		virtual_text = not virtual_lines,
-	})
-end, { desc = "Toggle diagnostic virtual lines" })

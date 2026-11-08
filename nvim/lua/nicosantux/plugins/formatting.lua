@@ -3,27 +3,41 @@ return {
 	event = { "BufReadPre", "BufNewFile" },
 	config = function()
 		local conform = require("conform")
-
-		local eslint_config_files = {
-			"eslint.config.js",
-			"eslint.config.mjs",
-			"eslint.config.cjs",
-			"eslint.config.ts",
-			"eslint.config.mts",
-			"eslint.config.cts",
-			".eslintrc",
-			".eslintrc.js",
-			".eslintrc.cjs",
-			".eslintrc.yaml",
-			".eslintrc.yml",
-			".eslintrc.json",
-		}
+		local util = require("conform.util")
 
 		conform.setup({
 			formatters = {
 				eslint_d = {
+					cwd = util.root_file({
+						"eslint.config.js",
+						"eslint.config.mjs",
+						"eslint.config.cjs",
+						"eslint.config.ts",
+						"eslint.config.mts",
+						"eslint.config.cts",
+					}),
+					require_cwd = true,
+				},
+				oxlint = {
+					cwd = util.root_file({ ".oxlintrc.json", ".oxlintrc.jsonc", "oxlint.config.ts", "oxlint.config.mts" }),
+					require_cwd = true,
+					-- A dot-prefixed temp file falls outside tsconfig's include, so type-aware fixes would strip needed `!`
+					tmpfile_format = "conform.$RANDOM.$FILENAME",
+				},
+				oxfmt = {
+					cwd = util.root_file({
+						".oxfmtrc.json",
+						".oxfmtrc.jsonc",
+						"oxfmt.config.ts",
+						"oxfmt.config.mts",
+						"vite.config.ts",
+						"vite.config.js",
+					}),
+					require_cwd = true,
+				},
+				prettierd = {
 					condition = function(_, ctx)
-						return vim.fs.find(eslint_config_files, { path = ctx.dirname, upward = true })[1] ~= nil
+						return not conform.get_formatter_info("oxfmt", ctx.buf).available
 					end,
 				},
 				["markdown-toc"] = {
@@ -37,28 +51,42 @@ return {
 				},
 			},
 			formatters_by_ft = {
-				astro = { "eslint_d", "prettierd" },
+				astro = { "oxlint", "eslint_d", "oxfmt", "prettierd" },
 				bash = { "shfmt" },
-				css = { "prettierd" },
+				css = { "oxfmt", "prettierd" },
 				html = { "prettierd" },
-				javascript = { "eslint_d", "prettierd" },
-				javascriptreact = { "eslint_d", "prettierd" },
-				json = { "prettierd" },
+				javascript = { "oxlint", "eslint_d", "oxfmt", "prettierd" },
+				javascriptreact = { "oxlint", "eslint_d", "oxfmt", "prettierd" },
+				json = { "oxfmt", "prettierd" },
 				lua = { "stylua" },
-				markdown = { "prettierd", "markdown-toc" },
-				mdx = { "prettierd", "markdown-toc" },
+				markdown = { "oxfmt", "prettierd", "markdown-toc" },
+				mdx = { "oxfmt", "prettierd", "markdown-toc" },
 				sh = { "shfmt" },
 				toml = { "taplo" },
-				typescript = { "eslint_d", "prettierd" },
-				typescriptreact = { "eslint_d", "prettierd" },
-				yaml = { "prettierd" },
+				typescript = { "oxlint", "eslint_d", "oxfmt", "prettierd" },
+				typescriptreact = { "oxlint", "eslint_d", "oxfmt", "prettierd" },
+				yaml = { "oxfmt", "prettierd" },
 			},
-			format_on_save = {
-				async = false,
-				lsp_format = "fallback",
-				timeout_ms = 3000,
-			},
+			format_on_save = function(bufnr)
+				if vim.b[bufnr].disable_autoformat then
+					return
+				end
+				return {
+					async = false,
+					lsp_format = "fallback",
+					timeout_ms = 3000,
+				}
+			end,
 		})
+
+		vim.api.nvim_create_user_command("ToggleFormatter", function()
+			local disabled = not vim.b.disable_autoformat
+			vim.b.disable_autoformat = disabled
+			vim.notify(
+				"Format on save " .. (disabled and "disabled" or "enabled") .. " for this buffer",
+				disabled and vim.log.levels.WARN or vim.log.levels.INFO
+			)
+		end, { desc = "Toggle format on save for current buffer" })
 
 		vim.keymap.set({ "n", "v" }, "<leader>mp", function()
 			conform.format({
