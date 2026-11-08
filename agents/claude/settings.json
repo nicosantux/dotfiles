@@ -17,13 +17,24 @@
       "mcp__plugin_engram_engram__mem_session_start",
       "mcp__plugin_engram_engram__mem_session_summary",
       "mcp__plugin_engram_engram__mem_suggest_topic_key",
-      "mcp__plugin_engram_engram__mem_update"
+      "mcp__plugin_engram_engram__mem_update",
+      "mcp__codegraph__*"
     ],
     "defaultMode": "auto"
   },
   "model": "opus",
   "hooks": {
     "SessionStart": [
+      {
+        "matcher": "^(startup|resume|clear|compact|fork)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$HOME/.claude/hooks/herdr-agent-state.sh\" session",
+            "timeout": 10
+          }
+        ]
+      },
       {
         "matcher": "^(startup|resume|clear|compact|fork)$",
         "hooks": [
@@ -45,6 +56,16 @@
           }
         ]
       }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "codegraph prompt-hook"
+          }
+        ]
+      }
     ]
   },
   "enableArtifact": false,
@@ -56,7 +77,8 @@
   "enabledPlugins": {
     "context7@claude-plugins-official": true,
     "engram@engram": true,
-    "mattpocock-skills@claude-plugins-official": true
+    "mattpocock-skills@claude-plugins-official": true,
+    "ponytail@ponytail": true
   },
   "extraKnownMarketplaces": {
     "engram": {
@@ -64,12 +86,21 @@
         "source": "github",
         "repo": "Gentleman-Programming/engram"
       }
+    },
+    "ponytail": {
+      "source": {
+        "source": "github",
+        "repo": "DietrichGebert/ponytail"
+      }
     }
   },
   "outputStyle": "Concise",
   "feedbackDrafts": "off",
   "effortLevel": "high",
   "modelSettings": {
+    "claude-haiku-5-5": {
+      "effortLevel": "medium"
+    },
     "claude-sonnet-5": {
       "effortLevel": "high"
     },
@@ -80,10 +111,19 @@
       "effortLevel": "high"
     }
   },
+  "advisorModel": "opus",
   "awaySummaryEnabled": false,
+  "pluginConfigs": {
+    "ponytail@ponytail": {
+      "options": {
+        "ledger": true,
+        "sendNames": true
+      }
+    }
+  },
   "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
-  "theme": "dark-ansi",
+  "theme": "auto",
   "editorMode": "vim",
   "verbose": false,
   "preferredNotifChannel": "auto"
