@@ -95,6 +95,9 @@ defaults write com.apple.finder ShowStatusBar -bool true
 defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 
+# Disable showing the desktop when clicking the wallpaper
+defaults write com.apple.WindowManager EnableStandardClickToShowDesktop -bool false
+
 # Disable the warning when changing a file's extension.
 defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
 
