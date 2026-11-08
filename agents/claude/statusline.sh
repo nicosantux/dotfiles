@@ -1,5 +1,6 @@
 #!/bin/bash
 set -f
+export LC_ALL=en_US.UTF-8
 
 input=$(cat)
 
@@ -9,29 +10,34 @@ if [ -z "$input" ]; then
 fi
 
 # ── Colors ──────────────────────────────────────────────
-blue='\033[38;2;0;153;255m'
-orange='\033[38;2;255;176;85m'
-green='\033[38;2;0;175;80m'
-cyan='\033[38;2;86;182;194m'
-red='\033[38;2;255;85;85m'
-yellow='\033[38;2;230;200;0m'
-white='\033[38;2;220;220;220m'
-magenta='\033[38;2;180;140;255m'
-dim='\033[2m'
+# Catppuccin Latte/Mocha, picked from the macOS appearance that Ghostty's theme follows.
+if command -v defaults >/dev/null 2>&1 && [ "$(defaults read -g AppleInterfaceStyle 2>/dev/null)" != "Dark" ]; then
+    mauve='\033[38;2;136;57;239m'
+    blue='\033[38;2;30;102;245m'
+    green='\033[38;2;64;160;43m'
+    yellow='\033[38;2;223;142;29m'
+    peach='\033[38;2;254;100;11m'
+    red='\033[38;2;210;15;57m'
+    text='\033[38;2;76;79;105m'
+    subtext='\033[38;2;108;111;133m'
+    overlay='\033[38;2;156;160;176m'
+else
+    mauve='\033[38;2;203;166;247m'
+    blue='\033[38;2;137;180;250m'
+    green='\033[38;2;166;227;161m'
+    yellow='\033[38;2;249;226;175m'
+    peach='\033[38;2;250;179;135m'
+    red='\033[38;2;243;139;168m'
+    text='\033[38;2;205;214;244m'
+    subtext='\033[38;2;166;173;200m'
+    overlay='\033[38;2;108;112;134m'
+fi
+bold='\033[1m'
 reset='\033[0m'
 
-sep=" ${dim}│${reset} "
+sep=" ${overlay}│${reset} "
 
 # ── Helpers ─────────────────────────────────────────────
-color_for_pct() {
-    local pct=$1
-    if [ "$pct" -ge 90 ]; then printf "$red"
-    elif [ "$pct" -ge 70 ]; then printf "$yellow"
-    elif [ "$pct" -ge 50 ]; then printf "$orange"
-    else printf "$green"
-    fi
-}
-
 build_bar() {
     local pct=$1
     local width=$2
@@ -40,25 +46,11 @@ build_bar() {
 
     local filled=$(( pct * width / 100 ))
     local empty=$(( width - filled ))
-    local bar_color
-    bar_color=$(color_for_pct "$pct")
-
     local filled_str="" empty_str=""
-    for ((i=0; i<filled; i++)); do filled_str+="●"; done
-    for ((i=0; i<empty; i++)); do empty_str+="○"; done
+    for ((i=0; i<filled; i++)); do filled_str+="▰"; done
+    for ((i=0; i<empty; i++)); do empty_str+="▱"; done
 
-    printf "${bar_color}${filled_str}${dim}${empty_str}${reset}"
-}
-
-format_token_count() {
-    local n=$1
-    if [ "$n" -ge 1000000 ]; then
-        awk -v n="$n" 'BEGIN { printf "%.1fm", n / 1000000 }'
-    elif [ "$n" -ge 1000 ]; then
-        awk -v n="$n" 'BEGIN { printf "%.1fk", n / 1000 }'
-    else
-        printf "%d" "$n"
-    fi
+    printf "${mauve}${filled_str}${subtext}${empty_str}${reset}"
 }
 
 format_epoch_time() {
@@ -72,11 +64,6 @@ format_epoch_time() {
             result=$(date -j -r "$epoch" +"%l:%M%p" 2>/dev/null)
             [ -z "$result" ] && result=$(date -d "@$epoch" +"%l:%M%P" 2>/dev/null)
             result=$(echo "$result" | sed 's/^ //; s/\.//g' | tr '[:upper:]' '[:lower:]')
-            ;;
-        datetime)
-            result=$(date -j -r "$epoch" +"%b %-d, %l:%M%p" 2>/dev/null)
-            [ -z "$result" ] && result=$(date -d "@$epoch" +"%b %-d, %l:%M%P" 2>/dev/null)
-            result=$(echo "$result" | sed 's/  / /g; s/^ //; s/\.//g' | tr '[:upper:]' '[:lower:]')
             ;;
         *)
             result=$(date -j -r "$epoch" +"%b %-d" 2>/dev/null)
@@ -118,6 +105,27 @@ iso_to_epoch() {
     return 1
 }
 
+visible_len() {
+    local plain
+    plain=$(printf "%b" "$1" | sed $'s/\033\\[[0-9;]*m//g')
+    echo "${#plain}"
+}
+
+# The statusline runs without a TTY, so read the size of the nearest ancestor's
+# terminal (the claude process) instead.
+terminal_cols() {
+    local pid=$PPID tty
+    for _ in 1 2 3 4 5; do
+        tty=$(ps -o tty= -p "$pid" 2>/dev/null | tr -d ' ')
+        if [ -n "$tty" ] && [[ "$tty" != "?"* ]]; then
+            { stty -f "/dev/$tty" size 2>/dev/null || stty -F "/dev/$tty" size 2>/dev/null; } | awk '{print $2}'
+            return
+        fi
+        pid=$(ps -o ppid= -p "$pid" 2>/dev/null | tr -d ' ')
+        [ -z "$pid" ] || [ "$pid" -le 1 ] && return
+    done
+}
+
 # ── Extract JSON data ───────────────────────────────────
 model_name=$(echo "$input" | jq -r '.model.display_name // "Claude"')
 
@@ -137,72 +145,30 @@ fi
 
 effort=$(echo "$input" | jq -r '.effort.level // "default"')
 
-total_input_tokens=$(echo "$input" | jq -r '.context_window.total_input_tokens // 0')
-total_output_tokens=$(echo "$input" | jq -r '.context_window.total_output_tokens // 0')
-total_tokens=$(( total_input_tokens + total_output_tokens ))
-total_tokens_fmt=$(format_token_count "$total_tokens")
-
-# ── LINE 1: Model │ Context % │ Directory (branch) │ Session │ Effort ──
-pct_color=$(color_for_pct "$pct_used")
+# ── Left: Model Effort │ Context % │ Cache [│ Branch] ──
 cwd=$(echo "$input" | jq -r '.cwd // ""')
 [ -z "$cwd" ] || [ "$cwd" = "null" ] && cwd=$(pwd)
-dirname=$(basename "$cwd")
 
-git_branch=""
-git_dirty=""
+git_segment=""
 if git -C "$cwd" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
     git_branch=$(git -C "$cwd" symbolic-ref --short HEAD 2>/dev/null)
-    if [ -n "$(git -C "$cwd" --no-optional-locks status --porcelain 2>/dev/null)" ]; then
-        git_dirty="*"
-    fi
-fi
-
-session_duration=""
-session_start=$(echo "$input" | jq -r '.session.start_time // empty')
-if [ -n "$session_start" ] && [ "$session_start" != "null" ]; then
-    start_epoch=$(iso_to_epoch "$session_start")
-    if [ -n "$start_epoch" ]; then
-        now_epoch=$(date +%s)
-        elapsed=$(( now_epoch - start_epoch ))
-        if [ "$elapsed" -ge 3600 ]; then
-            session_duration="$(( elapsed / 3600 ))h$(( (elapsed % 3600) / 60 ))m"
-        elif [ "$elapsed" -ge 60 ]; then
-            session_duration="$(( elapsed / 60 ))m"
-        else
-            session_duration="${elapsed}s"
+    if [ -n "$git_branch" ]; then
+        git_dirty=""
+        if [ -n "$(git -C "$cwd" --no-optional-locks status --porcelain 2>/dev/null)" ]; then
+            git_dirty="*"
         fi
+        git_segment="${sep}${green}${git_branch}${red}${git_dirty}${reset}"
     fi
 fi
 
-skip_perms=""
+left=""
 parent_cmd=$(ps -o args= -p "$PPID" 2>/dev/null)
 if [[ "$parent_cmd" == *"--dangerously-skip-permissions"* ]]; then
-    skip_perms="⚡  "
+    left+="${bold}${red}!${reset} "
 fi
 
-line1="${blue}${model_name}${reset}"
-line1+="${sep}"
-line1+="✍️ ${pct_color}${pct_used}%${reset}"
-line1+="${sep}"
-line1+="🪙 ${white}${total_tokens_fmt}${reset}"
-line1+="${sep}"
-line1+="${skip_perms}${cyan}${dirname}${reset}"
-if [ -n "$git_branch" ]; then
-    line1+=" ${green}(${git_branch}${red}${git_dirty}${green})${reset}"
-fi
-if [ -n "$session_duration" ]; then
-    line1+="${sep}"
-    line1+="${dim}⏱ ${reset}${white}${session_duration}${reset}"
-fi
-line1+="${sep}"
-case "$effort" in
-    low)    line1+="${cyan}◔ ${effort}${reset}" ;;
-    medium) line1+="${green}◑ ${effort}${reset}" ;;
-    high)   line1+="${magenta}● ${effort}${reset}" ;;
-    xhigh)  line1+="${orange}◉ ${effort}${reset}" ;;
-    max)    line1+="${red}◉ ${effort}${reset}" ;;
-    *)      line1+="${dim}◑ ${effort}${reset}" ;;
-esac
+left+="${mauve}${model_name} ${effort}${reset}"
+left+="${sep}${blue}ctx ${pct_used}%${reset}"
 
 # Persists each session's cache expiry so a resumed session can estimate the
 # cache state before its first API response provides `prompt_cache`.
@@ -213,8 +179,11 @@ cache_state_file=""
 
 format_cache_left() {
     local left=$(( $1 - $(date +%s) ))
-    [ "$left" -gt 0 ] && printf " ${white}%dm${reset}" $(( (left + 59) / 60 ))
+    [ "$left" -gt 0 ] && printf " ${text}%dm${reset}" $(( (left + 59) / 60 ))
 }
+
+warm_icon="${peach}◆${reset}"
+cold_icon="${blue}◇${reset}"
 
 cache_observed=$(echo "$input" | jq -r '.prompt_cache.caching_observed // false')
 if [ "$cache_observed" = "true" ]; then
@@ -228,20 +197,20 @@ if [ "$cache_observed" = "true" ]; then
         find "$cache_state_dir" -type f -mtime +7 -delete 2>/dev/null
     fi
 
-    line1+="${sep}"
+    left+="${sep}"
     if [ "$cache_warm" = "true" ]; then
-        line1+="🔥"
-        [ -n "$cache_expires" ] && line1+="$(format_cache_left "$cache_expires")"
+        left+="$warm_icon"
+        [ -n "$cache_expires" ] && left+="$(format_cache_left "$cache_expires")"
     else
-        line1+="🧊"
+        left+="$cold_icon"
     fi
 elif [ -n "$cache_state_file" ] && [ -f "$cache_state_file" ]; then
     stored_expires=$(cat "$cache_state_file" 2>/dev/null)
-    line1+="${sep}"
+    left+="${sep}"
     if [ -n "$stored_expires" ] && [ "$stored_expires" -gt "$(date +%s)" ] 2>/dev/null; then
-        line1+="🔥$(format_cache_left "$stored_expires")"
+        left+="${warm_icon}$(format_cache_left "$stored_expires")"
     else
-        line1+="🧊"
+        left+="$cold_icon"
     fi
 fi
 
@@ -267,7 +236,6 @@ cache_max_age=60
 mkdir -p /tmp/claude
 
 usage_data=""
-extra_enabled="false"
 
 if ! $has_stdin_rates; then
     needs_refresh=true
@@ -332,61 +300,60 @@ if ! $has_stdin_rates; then
         seven_day_pct=$(echo "$usage_data" | jq -r '.seven_day.utilization // 0' | awk '{printf "%.0f", $1}')
         seven_day_reset_iso=$(echo "$usage_data" | jq -r '.seven_day.resets_at // empty')
         seven_day_reset_epoch=$(iso_to_epoch "$seven_day_reset_iso")
-
-        extra_enabled=$(echo "$usage_data" | jq -r '.extra_usage.is_enabled // false')
-    fi
-else
-    if [ -f "$cache_file" ]; then
-        usage_data=$(cat "$cache_file" 2>/dev/null)
-        if [ -n "$usage_data" ] && echo "$usage_data" | jq -e . >/dev/null 2>&1; then
-            extra_enabled=$(echo "$usage_data" | jq -r '.extra_usage.is_enabled // false')
-        fi
     fi
 fi
 
-# ── Rate limit lines ────────────────────────────────────
-rate_lines=""
-bar_width=10
+# ── Right: rate limit segments ──────────────────────────
+bar_width=5
 
-if [ -n "$five_hour_pct" ]; then
-    five_hour_reset=$(format_epoch_time "$five_hour_reset_epoch" "time")
-    five_hour_bar=$(build_bar "$five_hour_pct" "$bar_width")
-    five_hour_pct_color=$(color_for_pct "$five_hour_pct")
-    five_hour_pct_fmt=$(printf "%3d" "$five_hour_pct")
+# Prints "<label> [bar] <pct>% [reset]"; $4/$5 toggle the bar and reset parts.
+rate_segment() {
+    local label=$1 pct=$2 reset_text=$3 with_bar=$4 with_reset=$5
+    [ -z "$pct" ] && return
+    local out="${text}${label}${reset} "
+    $with_bar && out+="$(build_bar "$pct" "$bar_width") "
+    out+="${mauve}${pct}%${reset}"
+    $with_reset && [ -n "$reset_text" ] && out+=" ${subtext}⟳${reset} ${text}${reset_text}${reset}"
+    printf "%s" "$out"
+}
 
-    rate_lines+="${white}current${reset} ${five_hour_bar} ${five_hour_pct_color}${five_hour_pct_fmt}%${reset}"
-    [ -n "$five_hour_reset" ] && rate_lines+=" ${dim}⟳${reset} ${white}${five_hour_reset}${reset}"
-fi
+five_hour_reset=$(format_epoch_time "$five_hour_reset_epoch" "time")
+seven_day_reset=$(format_epoch_time "$seven_day_reset_epoch" "date")
 
-if [ -n "$seven_day_pct" ]; then
-    seven_day_reset=$(format_epoch_time "$seven_day_reset_epoch" "datetime")
-    seven_day_bar=$(build_bar "$seven_day_pct" "$bar_width")
-    seven_day_pct_color=$(color_for_pct "$seven_day_pct")
-    seven_day_pct_fmt=$(printf "%3d" "$seven_day_pct")
+five_full=$(rate_segment 5h "$five_hour_pct" "$five_hour_reset" true true)
+five_no_bar=$(rate_segment 5h "$five_hour_pct" "$five_hour_reset" false true)
+five_pct_only=$(rate_segment 5h "$five_hour_pct" "" false false)
+seven_full=$(rate_segment 7d "$seven_day_pct" "$seven_day_reset" true true)
 
-    [ -n "$rate_lines" ] && rate_lines+="${sep}"
-    rate_lines+="${white}weekly${reset} ${seven_day_bar} ${seven_day_pct_color}${seven_day_pct_fmt}%${reset}"
-    [ -n "$seven_day_reset" ] && rate_lines+=" ${dim}⟳${reset} ${white}${seven_day_reset}${reset}"
-fi
+both="$five_full"
+[ -n "$five_full" ] && [ -n "$seven_full" ] && both+="$sep"
+both+="$seven_full"
 
-if [ "$extra_enabled" = "true" ] && [ -n "$usage_data" ]; then
-    extra_pct=$(echo "$usage_data" | jq -r '.extra_usage.utilization // 0' | awk '{printf "%.0f", $1}')
-    extra_used=$(echo "$usage_data" | jq -r '.extra_usage.used_credits // 0' | awk '{printf "%.2f", $1/100}')
-    extra_limit=$(echo "$usage_data" | jq -r '.extra_usage.monthly_limit // 0' | awk '{printf "%.2f", $1/100}')
-    extra_bar=$(build_bar "$extra_pct" "$bar_width")
-    extra_pct_color=$(color_for_pct "$extra_pct")
+# ── Output: one line, dropping segments until it fits ──
+cols=$(terminal_cols)
+[ -z "$cols" ] || [ "$cols" -le 0 ] 2>/dev/null && cols=100
+# Leaves room for what Claude Code draws on the same row.
+available=$(( cols - 6 ))
+min_gap=2
 
-    extra_reset=$(date -v+1m -v1d +"%b %-d" 2>/dev/null | tr '[:upper:]' '[:lower:]')
-    if [ -z "$extra_reset" ]; then
-        extra_reset=$(date -d "$(date +%Y-%m-01) +1 month" +"%b %-d" 2>/dev/null | tr '[:upper:]' '[:lower:]')
-    fi
+candidates=(
+    "${left}${git_segment}|${both}"
+    "${left}|${both}"
+    "${left}|${five_full}"
+    "${left}|${five_no_bar}"
+    "${left}|${five_pct_only}"
+    "${left}|"
+)
 
-    [ -n "$rate_lines" ] && rate_lines+="\n"
-    rate_lines+="${white}extra${reset}   ${extra_bar} ${extra_pct_color}\$${extra_used}${dim}/${reset}${white}\$${extra_limit}${reset} ${dim}⟳${reset} ${white}${extra_reset}${reset}"
-fi
+for candidate in "${candidates[@]}"; do
+    l="${candidate%%|*}"
+    r="${candidate#*|}"
+    gap=$(( available - $(visible_len "$l") - $(visible_len "$r") ))
+    [ "$gap" -ge "$min_gap" ] && break
+done
+[ "$gap" -lt 1 ] && gap=1
+[ -z "$r" ] && gap=0
 
-# ── Output ──────────────────────────────────────────────
-printf "%b" "$line1"
-[ -n "$rate_lines" ] && printf "\n\n%b" "$rate_lines"
+printf "%b%*s%b" "$l" "$gap" "" "$r"
 
 exit 0
