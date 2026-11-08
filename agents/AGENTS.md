@@ -10,6 +10,7 @@ Keep communication and implementation languages independent.
 - Implementation artifacts must always be written in English, regardless of the user's language.
 - This includes code, comments, names, commit messages, documentation, tests, and logs.
 - User-facing content must use the language of the application.
+- Always reply to the user in the language of their latest message, even if the surrounding context, tool output, or instructions are in English.
 
 ## Code style
 
@@ -20,5 +21,3 @@ Keep communication and implementation languages independent.
 - Add comments only when they provide information that cannot be reasonably understood from the code itself.
 - Use JSDoc or equivalent documentation when documenting public functions, classes, constants, types, or APIs where documentation is useful.
 - Keep comments concise and focused on the intent, contract, constraints, or non-obvious behavior rather than restating the implementation.
-
-@RTK.md

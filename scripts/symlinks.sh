@@ -3,7 +3,6 @@
 echo "Removing existing dotfiles..."
 # Remove files if they already exist.
 rm -rf ~/.agents/.skill-lock.json \
-  ~/.claude/CLAUDE.md \
   ~/.claude/commands \
   ~/.claude/settings.json \
   ~/.claude/statusline.sh \
@@ -15,14 +14,12 @@ rm -rf ~/.agents/.skill-lock.json \
   ~/.config/karabiner/karabiner.json \
   ~/.config/mise/config.toml \
   ~/.config/nvim \
-  ~/.config/opencode/AGENTS.md \
   ~/.config/opencode/command \
   ~/.config/opencode/opencode.jsonc \
   ~/.config/sketchybar \
   ~/.config/starship \
   ~/.config/tmux \
   ~/.config/yazi \
-  ~/.local/bin/herdr-sessionizer \
   ~/.zshrc \
   2>/dev/null
 
@@ -45,9 +42,20 @@ mkdir -p ~/.agents \
   ~/.config/yazi \
   ~/.local/bin
 
+# Agent instruction files are owned by rtk and codegraph, which append to them,
+# so Claude imports the shared instructions and opencode loads them via `instructions`.
+for agent_file in ~/.claude/CLAUDE.md ~/.config/opencode/AGENTS.md; do
+  if [ -L "$agent_file" ]; then
+    rm "$agent_file"
+  fi
+done
+claude_import="@~/dotfiles/agents/AGENTS.md"
+if ! grep -qxF "$claude_import" ~/.claude/CLAUDE.md 2>/dev/null; then
+  claude_existing="$(cat ~/.claude/CLAUDE.md 2>/dev/null)"
+  printf '%s\n\n%s\n' "$claude_import" "$claude_existing" > ~/.claude/CLAUDE.md
+fi
+
 # Symlinking files
-ln -s ~/dotfiles/agents/AGENTS.md ~/.claude/CLAUDE.md
-ln -s ~/dotfiles/agents/AGENTS.md ~/.config/opencode/AGENTS.md
 ln -s ~/dotfiles/agents/claude/settings.json ~/.claude/settings.json
 ln -s ~/dotfiles/agents/claude/statusline.sh ~/.claude/statusline.sh
 ln -s ~/dotfiles/agents/commands ~/.claude/commands
@@ -58,7 +66,6 @@ ln -s ~/dotfiles/aerospace/aerospace.toml ~/.config/aerospace/aerospace.toml
 ln -s ~/dotfiles/borders/bordersrc ~/.config/borders/bordersrc
 ln -s ~/dotfiles/ghostty/config ~/.config/ghostty/config
 ln -s ~/dotfiles/herdr/config.toml ~/.config/herdr/config.toml
-ln -s ~/dotfiles/herdr/sessionizer.sh ~/.local/bin/herdr-sessionizer
 ln -s ~/dotfiles/karabiner/karabiner.json ~/.config/karabiner/karabiner.json
 ln -s ~/dotfiles/mise/config.toml ~/.config/mise/config.toml
 ln -s ~/dotfiles/nvim/* ~/.config/nvim/
