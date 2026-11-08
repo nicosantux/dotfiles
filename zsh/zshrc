@@ -19,6 +19,12 @@ export DEJA_TOGGLE_EMPTY_KEY=
 # syntax highlighting
 zinit light zsh-users/zsh-syntax-highlighting
 
+# carapace
+autoload -Uz compinit && compinit
+export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense'
+zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
+source <(carapace _carapace)
+
 # starship
 eval "$(starship init zsh)"
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
@@ -66,6 +72,11 @@ run_dev() {
   fi
 }
 
+# Start herdr through herdr-hop so sessions can be switched from inside herdr
+hop() {
+  bash "$(herdr plugin list --json | jq -r '.result.plugins[] | select(.plugin_id == "herdr-hop") | .plugin_root')/bin/hop" "$@"
+}
+
 alias dev='run_dev'
 alias bye="rm -rf"
 alias cat="bat"
@@ -95,7 +106,8 @@ alias gst="git status -u"
 alias gsw="git switch"
 alias gswl='git switch $(git branch | fzf | sed "s/* //")'
 alias gswr='git switch $(git branch -r | fzf | sed "s/ *origin\///")'
-alias hs="herdr-sessionizer"
+alias hh="hop"
+alias ldk="lazydocker"
 alias lg="lazygit"
 alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"
 alias oc="opencode"
@@ -109,8 +121,6 @@ alias tree="eza --tree --icons"
 # fzf
 # Set up fzf key bindings and fuzzy completion
 eval "$(fzf --zsh)"
-
-source <(fzf --zsh)
 
 # Use fd instead of fzf
 export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
