@@ -11,6 +11,21 @@ return {
 			documentation = { auto_show = true, auto_show_delay_ms = 300 },
 		},
 		signature = { enabled = true },
+		cmdline = {
+			keymap = {
+				preset = "cmdline",
+				["<Left>"] = false,
+				["<Right>"] = false,
+			},
+			completion = {
+				list = { selection = { preselect = false } },
+				menu = {
+					auto_show = function()
+						return vim.fn.getcmdtype() == ":"
+					end,
+				},
+			},
+		},
 		sources = {
 			default = { "lsp", "path", "snippets", "buffer" },
 			per_filetype = {
