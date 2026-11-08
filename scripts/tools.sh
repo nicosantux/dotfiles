@@ -13,9 +13,15 @@ bat cache --build
 echo "Configuring rtk..."
 rtk init --global --opencode --auto-patch
 
+# Install codegraph and wire it into the agents.
+echo "Installing codegraph..."
+curl -fsSL https://raw.githubusercontent.com/colbymchenry/codegraph/main/install.sh | sh
+~/.local/bin/codegraph install --yes
+
 # Install herdr plugins.
 echo "Installing herdr plugins..."
 herdr plugin install paulbkim-dev/vim-herdr-navigation --yes
+herdr plugin install nicosantux/herdr-hop --yes
 
 # Install mise tools.
 echo "Installing mise tools..."
